@@ -1,0 +1,32 @@
+body {
+    font-family: 'Poppins', sans-serif;
+}
+
+.background-wrapper {
+    background-size: cover;
+    background-position: center;
+}
+
+h2 {
+    color: white;
+}
+
+footer .social-icons a {
+    margin: 0 10px;
+    font-size: 20px;
+}
+
+
+/* Adjust carousel image size */
+.carousel-inner .item img.carousel-image {
+    width: 100%;
+    height: auto;
+    max-height: 400px; /* Set a max height for better control */
+    object-fit: cover; /* Ensures images fill the area without distortion */
+}
+
+/* Optionally, you can make sure captions don't overlap with the image */
+.carousel-caption {
+    background-color: rgba(0, 0, 0, 0.5); /* Slight dark background for readability */
+    padding: 10px;
+}

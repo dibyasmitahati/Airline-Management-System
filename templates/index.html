@@ -3,41 +3,120 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Airlines Management System</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <title>Airline-X</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .navbar {
+            margin-bottom: 0;
+        }
+        .navbar-brand {
+            font-size: 24px;
+        }
+        .carousel-inner img {
+            width: 100%;
+            height: auto;
+        }
+        .service {
+            text-align: center;
+            padding: 20px;
+        }
+        .footer {
+            text-align: center;
+            padding: 10px;
+            background-color: #f1f1f1;
+        }
+        .background-wrapper {
+            background-image: url('images/airline/aa.jpg');
+            background-size: cover;
+            color: white;
+            padding: 100px 0;
+            text-align: center;
+        }
+    </style>
 </head>
 <body>
-    <header>
-        <img src="{{ url_for('static', filename='images/logo.svg') }}" alt="Airlines Logo" class="logo">
-        <h1>Welcome to Airlines Management System</h1>
-        <nav>
-            <ul>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-inverse">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#">Airline-X</a>
+            </div>
+            <ul class="nav navbar-nav navbar-right">
                 <li><a href="/">Home</a></li>
                 <li><a href="/flights">Flights</a></li>
                 <li><a href="/bookings">Bookings</a></li>
                 <li><a href="/about">About Us</a></li>
             </ul>
-        </nav>
-    </header>
+        </div>
+    </nav>
 
-    <main>
-        <h2>Explore Our Services</h2>
-        <div class="services">
-            <div class="service">
-                
-                <h3>Flight Services</h3>
-                <p>Book flights with ease and comfort.</p>
+    <!-- Carousel -->
+    <div id="myCarousel" class="carousel slide" data-ride="carousel">
+        <ol class="carousel-indicators">
+            <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+            <li data-target="#myCarousel" data-slide-to="1"></li>
+            <li data-target="#myCarousel" data-slide-to="2"></li>
+        </ol>
+        <div class="carousel-inner">
+            <div class="item active">
+                <img src="../static/images/Welcome.jpg" alt="Welcome" class="carousel-image">
+                <div class="carousel-caption">
+                    <h2>Welcome to Airline-X</h2>
+                    <p>Your journey begins here!</p>
+                </div>
             </div>
-            <div class="service">
-                
-                <h3>Booking Management</h3>
-                <p>Manage your bookings efficiently.</p>
+            <div class="item">
+                <img src="../static/images/Airplane.jpg" alt="Flight" class="carousel-image">
+                <div class="carousel-caption">
+                    <h2>Book Your Flight</h2>
+                    <p>Explore our services and destinations.</p>
+                </div>
+            </div>
+            <div class="item">
+                <img src="../static/images/Luxury.jpg" alt="Luxury Flights" class="carousel-image">
+                <div class="carousel-caption">
+                    <h2>Luxurious & Safe Travel</h2>
+                    <p>Travel with comfort and style.</p>
+                </div>
             </div>
         </div>
-    </main>
+    </div>
 
-    <footer>
-        <p>&copy; 2024 Airlines Management System</p>
+    <!-- Services Section -->
+    <div class="container text-center">
+        <h2>Our Services</h2>
+        <div class="row">
+            <div class="col-sm-6 col-md-4">
+                <div class="service">
+                    <h3>Flight Booking</h3>
+                    <p>Book flights quickly and easily.</p>
+                </div>
+            </div>
+            <div class="col-sm-6 col-md-4">
+                <div class="service">
+                    <h3>Manage Bookings</h3>
+                    <p>Access and modify your bookings anytime.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Background Section -->
+    <div class="background-wrapper">
+        <h1>Fly to Your Desired Destination</h1>
+        <p>We take care of your comfort and safety.</p>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>&copy; 2024 Airline-X. All rights reserved.</p>
     </footer>
+
 </body>
 </html>
