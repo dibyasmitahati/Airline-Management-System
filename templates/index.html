@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Airlines Management System</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <header>
+        <img src="{{ url_for('static', filename='images/logo.svg') }}" alt="Airlines Logo" class="logo">
+        <h1>Welcome to Airlines Management System</h1>
+        <nav>
+            <ul>
+                <li><a href="/">Home</a></li>
+                <li><a href="/flights">Flights</a></li>
+                <li><a href="/bookings">Bookings</a></li>
+                <li><a href="/about">About Us</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <h2>Explore Our Services</h2>
+        <div class="services">
+            <div class="service">
+                
+                <h3>Flight Services</h3>
+                <p>Book flights with ease and comfort.</p>
+            </div>
+            <div class="service">
+                
+                <h3>Booking Management</h3>
+                <p>Manage your bookings efficiently.</p>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Airlines Management System</p>
+    </footer>
+</body>
+</html>
