@@ -5,32 +5,41 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>User Panel</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <link rel="stylesheet" href="{{url_for('static', filename='css/user/user-panel.css') }}">
+    <link rel="stylesheet" href="{{url_for('static', filename='css/user/user-panel.css')}}">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
 <body>
     <!-- Navbar -->
-    <nav class="navbar navbar-inverse">
+    <nav class="navbar navbar-inverse navbar-custom">
         <div class="container-fluid">
             <div class="navbar-header">
                 <a class="navbar-brand" href="#">Airline-Z</a>
             </div>
             <ul class="nav navbar-nav navbar-right">
-                <ul class="nav navbar-nav navbar-right">
-                    <li><a href="{{ url_for('index') }}">Home</a></li>
-                    <li><a href="{{ url_for('check_flights') }}">Check Flights</a></li>
-                    <li><a href="{{ url_for('book_ticket') }}">Book Ticket</a></li>
-                    <li><a href="{{ url_for('cancel_ticket') }}">Cancel Ticket</a></li>
-                    <li><a href="{{ url_for('about_us') }}">About Us</a></li>
-                    <li><a href="{{ url_for('contact_us') }}">Contact Us</a></li>
-                </ul>
-                
+                <li><a href="{{ url_for('index') }}">Home</a></li>
+                <li><a href="{{ url_for('check_flights') }}">Check Flights</a></li>
+                <li><a href="{{ url_for('book_ticket') }}">Book Ticket</a></li>
+                <li><a href="{{ url_for('cancel_ticket') }}">Cancel Ticket</a></li>
+                <li><a href="{{ url_for('about_us') }}">About Us</a></li>
+                <li><a href="{{ url_for('contact_us') }}">Contact Us</a></li>
             </ul>
         </div>
     </nav>
 
+    <!-- Welcome Section -->
+    <div class="container welcome-section">
+        <h1>Welcome to Airline-Z User Panel</h1>
+        <p>Manage your bookings, check flights, and stay updated with our services.</p>
+    </div>
 
-    <script src="{{url_for('static', filename='js/user/user_panel.js')}}"></script>
+   <!-- Footer -->
+   <footer class="footer">
+        <div class="container text-center">
+            <p>&copy; 2025 Airline-Z. All rights reserved.</p>
+        </div>
+   </footer>
+
+   <script src="{{url_for('static', filename='js/user/user_panel.js')}}"></script>
 </body>
 </html>
