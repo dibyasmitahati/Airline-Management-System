@@ -3,10 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Airline-X</title>
+    <title>Airline-Z</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="stylesheet", href="{{url_for('static', filename='css/index.css')}}">
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -45,13 +46,12 @@
     <nav class="navbar navbar-inverse">
         <div class="container-fluid">
             <div class="navbar-header">
-                <a class="navbar-brand" href="#">Airline-X</a>
+                <a class="navbar-brand" href="#">Airline-Z</a>
             </div>
             <ul class="nav navbar-nav navbar-right">
-                <li><a href="/">Home</a></li>
-                <li><a href="/flights">Flights</a></li>
-                <li><a href="/bookings">Bookings</a></li>
-                <li><a href="/about">About Us</a></li>
+                <li><a href="{{url_for('index')}}">Home</a></li>
+                <li><a href="{{url_for('user_panel')}}">User</a></li>
+                <li><a href="{{url_for('admin_panel')}}">Admin</a></li>
             </ul>
         </div>
     </nav>
@@ -67,7 +67,7 @@
             <div class="item active">
                 <img src="../static/images/Welcome.jpg" alt="Welcome" class="carousel-image">
                 <div class="carousel-caption">
-                    <h2>Welcome to Airline-X</h2>
+                    <h2>Welcome to Airline-Z</h2>
                     <p>Your journey begins here!</p>
                 </div>
             </div>
@@ -115,8 +115,9 @@
 
     <!-- Footer -->
     <footer class="footer">
-        <p>&copy; 2024 Airline-X. All rights reserved.</p>
+        <p>&copy; 2024 Airline-Z. All rights reserved.</p>
     </footer>
 
+    <script src="{{url_for('static', filename='js/index.js')}}"></script>
 </body>
 </html>
