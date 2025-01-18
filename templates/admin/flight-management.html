@@ -4,13 +4,125 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Flight Management</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin/flight-management.css') }}">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
 <body>
-    <pre>
-        TODO : 1. Add flight details
-               2. Remove flight details
-               3. Modify flight details
-               4. Search flights by flight_id
-    </pre>
+    <!-- Navbar -->
+    <nav class="navbar navbar-inverse">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="{{ url_for('index') }}">Airline-Z</a>
+            </div>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="{{ url_for('admin_panel') }}">Home</a></li>
+                <li><a href="{{ url_for('staff_management') }}">Staff</a></li>
+                <li class="active"><a href="{{ url_for('flight_management') }}">Flights</a></li>
+                <li><a href="{{ url_for('refund_management') }}">Refund</a></li>
+                <li><a href="{{ url_for('user_management') }}">Users</a></li>
+                <li><a href="{{ url_for('ticket_management') }}">Ticket</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Flight Management -->
+    <div class="container">
+        <header class="text-center">
+            <h2>Flight Management</h2>
+            <hr>
+        </header>
+
+        <!-- Add Flight -->
+        <section id="add-flight">
+            <h3>Add Flight</h3>
+            <form id="add-flight-form" method="POST" action="{{ url_for('add_flight') }}">
+                <label>Source:</label>
+                <input type="text" name="source" required>
+                <label>Destination:</label>
+                <input type="text" name="destination" required>
+                <label>Departure Time:</label>
+                <input type="datetime-local" name="departure_time" required>
+                <label>Duration:</label>
+                <input type="time" name="duration" required>
+                <button type="submit">Add Flight</button>
+            </form>
+        </section>
+
+        <!-- Remove Flight -->
+        <section id="remove-flight">
+            <h3>Remove Flight</h3>
+            <form id="remove-flight-form" method="POST" action="{{ url_for('remove_flight') }}">
+                <label>Flight ID:</label>
+                <input type="number" name="flight_id" required>
+                <button type="submit">Remove Flight</button>
+            </form>
+        </section>
+
+        <!-- Modify Flight -->
+        <section id="modify-flight">
+            <h3>Modify Flight</h3>
+            <form id="modify-flight-form" method="POST" action="{{ url_for('modify_flight') }}">
+                <label>Flight ID:</label>
+                <input type="number" name="flight_id" required>
+                <label>Source:</label>
+                <input type="text" name="source">
+                <label>Destination:</label>
+                <input type="text" name="destination">
+                <label>Departure Time:</label>
+                <input type="datetime-local" name="departure_time">
+                <label>Duration:</label>
+                <input type="time" name="duration">
+                <button type="submit">Modify Flight</button>
+            </form>
+        </section>
+
+        <!-- Search Flight -->
+        <section id="search-flight">
+            <h3>Search Flight</h3>
+            <form id="search-flight-form" method="GET" action="{{ url_for('search_flight') }}">
+                <label>Flight ID:</label>
+                <input type="number" name="flight_id" required>
+                <button type="submit">Search</button>
+            </form>
+        </section>
+
+        <!-- Flight Details Table -->
+        <section id="flight-details">
+            <h3>Flight Details</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Flight ID</th>
+                        <th>Source</th>
+                        <th>Destination</th>
+                        <th>Departure Time</th>
+                        <th>Duration</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for flight in flights %}
+                    <tr>
+                        <td>{{ flight.flight_id }}</td>
+                        <td>{{ flight.source }}</td>
+                        <td>{{ flight.destination }}</td>
+                        <td>{{ flight.departure_time }}</td>
+                        <td>{{ flight.duration }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </section>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container text-center" style="background-color: #222;">
+            <p>&copy; 2025 Airline-Z. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="{{ url_for('static', filename='js/admin/flight_management.js') }}"></script>
 </body>
 </html>

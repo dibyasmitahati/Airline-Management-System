@@ -4,15 +4,39 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Staff Management</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin/staff-management.css') }}">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
 <body>
 
-    <pre>
-        TODO : 1. Add Staff Option
-               2. Remove Staff Option
-               3. Modify Staff Option
-               4. Search Staffby staff_id Option
-    </pre>
-    
+   <!-- Navbar -->
+   <nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="{{ url_for('index') }}">Airline-Z</a>
+        </div>
+        <ul class="nav navbar-nav navbar-right">
+            <li><a href="{{ url_for('admin_panel') }}">Home</a></li>
+            <li><a href="{{ url_for('staff_management') }}">Staff</a></li>
+            <li class="active"><a href="{{ url_for('flight_management') }}">Flights</a></li>
+            <li><a href="{{ url_for('refund_management') }}">Refund</a></li>
+            <li><a href="{{ url_for('user_management') }}">Users</a></li>
+            <li><a href="{{ url_for('ticket_management') }}">Ticket</a></li>
+        </ul>
+    </div>
+
+
+</nav>
+
+<!-- Footer -->
+<footer class="footer">
+    <div class="container text-center" style="background-color: #222;">
+        <p>&copy; 2025 Airline-Z. All rights reserved.</p>
+    </div>
+</footer>
+
+<script src="{{ url_for('static', filename='js/admin/staff_management.js') }}"></script>
 </body>
 </html>
