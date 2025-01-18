@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Check Flights</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <link rel="stylesheet" href="{{url_for('static', filename='css/user/check-flights.css')}}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/user/check-flights.css') }}">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
@@ -18,7 +18,7 @@
             </div>
             <ul class="nav navbar-nav navbar-right">
                 <li><a href="{{ url_for('index') }}">Home</a></li>
-                <li><a href="{{ url_for('check_flights') }}">Check Flights</a></li>
+                <li class="active"><a href="{{ url_for('check_flights') }}">Check Flights</a></li>
                 <li><a href="{{ url_for('book_ticket') }}">Book Ticket</a></li>
                 <li><a href="{{ url_for('cancel_ticket') }}">Cancel Ticket</a></li>
                 <li><a href="{{ url_for('about_us') }}">About Us</a></li>
@@ -27,13 +27,55 @@
         </div>
     </nav>
     
+    <!-- Flight Search Section -->
+    <div class="container">
+        <header class="text-center">
+            <h2>Find Your Flight</h2>
+            <hr>
+        </header>
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <form id="flight-search-form">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <label for="from">From</label>
+                            <input type="text" id="from" name="from" class="form-control" placeholder="Origin" required>
+                        </div>
+                        <div class="col-sm-6">
+                            <label for="to">To</label>
+                            <input type="text" id="to" name="to" class="form-control" placeholder="Destination" required>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <label for="departure-date">Departure Date</label>
+                            <input type="date" id="departure-date" name="departure_date" class="form-control" required>
+                        </div>
+                        <div class="col-sm-6">
+                            <label for="class">Class</label>
+                            <select id="class" name="class" class="form-control">
+                                <option value="Economy">Economy</option>
+                                <option value="Business">Business</option>
+                                <option value="First">First</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="text-center">
+                        <br>
+                        <button type="submit" class="btn btn-primary">Search Flights</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
     <!-- Footer -->
-   <footer class="footer">
+    <footer class="footer">
         <div class="container text-center">
             <p>&copy; 2025 Airline-Z. All rights reserved.</p>
         </div>
-   </footer>
+    </footer>
 
-   <script src="{{url_for('static', filename='js/user/check-flights.js')}}"></script>
+    <script src="{{ url_for('static', filename='js/user/check-flights.js') }}"></script>
 </body>
 </html>

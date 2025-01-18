@@ -1,0 +1,48 @@
+/* Background Styling */
+.background-wrapper {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+}
+
+/* Panel Styling */
+.panel {
+    background-color: rgba(255, 255, 255, 0.9);
+    border: none;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.panel-body h3 {
+    color: #34495e;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+/* Form Styling */
+.form-group label {
+    color: #34495e;
+    font-weight: bold;
+}
+.form-control {
+    margin-bottom: 15px;
+}
+.btn-primary {
+    background-color: #2980b9;
+    border-color: #2980b9;
+}
+.btn-secondary {
+    background-color: #bdc3c7;
+    border-color: #bdc3c7;
+}
+
+/* Footer Styling */
+.footer {
+    background-color: #222222;
+    color: white;
+    padding: 10px 0;
+}
+.footer p {
+    margin: 0;
+}
