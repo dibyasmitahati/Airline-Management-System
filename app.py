@@ -9,10 +9,10 @@ app.secret_key = "your_secret_key"
 
 # Database connection
 connection = pymysql.connect(
-    host='anish107.mysql.pythonanywhere-services.com',
-    user='anish107',  
-    password='Airlinesmanagement',  
-    database='anish107$default',  
+    host='localhost',
+    user='root',  
+    password='JustInTime321',  
+    database='airlinez_test',  
     cursorclass=pymysql.cursors.DictCursor  
 )
 
