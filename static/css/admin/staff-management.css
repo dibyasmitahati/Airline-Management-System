@@ -1,0 +1,143 @@
+/* staff-management.css */
+
+/* General Page Styling */
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f8f9fa;
+    color: #333;
+}
+
+/* Navbar Styling */
+.navbar {
+    border-radius: 0;
+    margin-bottom: 0;
+}
+
+.navbar-brand {
+    font-size: 1.5em;
+    font-weight: bold;
+    color: #fff !important;
+}
+
+.navbar-inverse .navbar-nav > li > a {
+    color: #ddd;
+}
+
+.navbar-inverse .navbar-nav > li > a:hover,
+.navbar-inverse .navbar-nav > .active > a {
+    color: #fff;
+    background-color: #5bc0de;
+}
+
+/* Footer Styling */
+.footer {
+    background-color: #222;
+    color: #ccc;
+    padding: 15px;
+    text-align: center;
+    margin-top: 30px;
+}
+
+.footer a {
+    color: #fff;
+    text-decoration: none;
+}
+
+/* Table Styling */
+table {
+    margin: 20px auto;
+    width: 90%;
+    border-collapse: collapse;
+    background-color: #fff;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+table th,
+table td {
+    padding: 12px;
+    text-align: center;
+    border: 1px solid #ddd;
+}
+
+table th {
+    background-color: #007bff;
+    color: #fff;
+    font-weight: bold;
+}
+
+table tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+table tr:hover {
+    background-color: #e8f8ff;
+    cursor: pointer;
+}
+
+/* Buttons */
+.btn {
+    margin: 5px;
+    padding: 10px 20px;
+    border-radius: 5px;
+    border: none;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.btn-primary {
+    background-color: #007bff;
+    color: #fff;
+}
+
+.btn-primary:hover {
+    background-color: #0056b3;
+}
+
+.btn-danger {
+    background-color: #dc3545;
+    color: #fff;
+}
+
+.btn-danger:hover {
+    background-color: #c82333;
+}
+
+/* Form Styling */
+form {
+    margin: 20px auto;
+    width: 90%;
+    padding: 15px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+form label {
+    font-weight: bold;
+}
+
+form input,
+form select {
+    margin-bottom: 15px;
+    padding: 8px;
+    width: calc(100% - 20px);
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+form button {
+    display: block;
+    margin: 0 auto;
+    background-color: #28a745;
+    color: white;
+    font-size: 16px;
+    padding: 10px 20px;
+    border-radius: 5px;
+    border: none;
+}
+
+form button:hover {
+    background-color: #218838;
+}

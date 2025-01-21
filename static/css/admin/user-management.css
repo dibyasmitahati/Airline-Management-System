@@ -1,0 +1,36 @@
+/* General Page Styling */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f8f9fa;
+}
+
+h2 {
+    margin-top: 20px;
+    font-weight: bold;
+}
+
+/* Table Styling */
+.table {
+    margin-top: 20px;
+    width: 100%;
+}
+
+.table th {
+    background-color: #007bff;
+    color: white;
+}
+
+.table tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+.table tr:hover {
+    background-color: #e8f8ff;
+}
+
+/* Buttons */
+.btn {
+    margin: 2px;
+    border-radius: 5px;
+}
+

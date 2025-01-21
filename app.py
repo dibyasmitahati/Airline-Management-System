@@ -9,11 +9,11 @@ app.secret_key = "your_secret_key"
 
 # Database connection
 connection = pymysql.connect(
-    host='localhost',
-    user='root',  # Replace with your MySQL username
-    password='JustInTime321',  # Replace with your MySQL password
-    database='airlinez_test',  # Replace with your database name
-    cursorclass=pymysql.cursors.DictCursor  # Return results as dictionaries
+    host='anish107.mysql.pythonanywhere-services.com',
+    user='anish107',  
+    password='Airlinesmanagement',  
+    database='anish107$default',  
+    cursorclass=pymysql.cursors.DictCursor  
 )
 
 @app.route('/')
@@ -24,9 +24,59 @@ def index():
 def admin_panel():
     return render_template('admin/admin-panel.html')
 
-@app.route('/admin/staff-management')
+# Staff Management
+
+@app.route('/admin/staff-management', methods=['GET'])
 def staff_management():
-    return render_template('admin/staff-management.html')
+    try:
+        with connection.cursor() as cursor:
+            cursor.execute("SELECT * FROM staff")
+            staff_list = cursor.fetchall()
+        return render_template('admin/staff-management.html', staff_list=staff_list)
+    except Exception as e:
+        flash(f"Error: {e}", "danger")
+        return redirect(url_for('admin_panel'))
+
+@app.route('/admin/add-staff', methods=['POST'])
+def add_staff():
+    try:
+        data = request.form
+        with connection.cursor() as cursor:
+            cursor.execute("""
+                INSERT INTO staff (name, surname, gender, dob, street, locality, city, country, phone, email, hiring_date, salary) 
+                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+            """, (data['name'], data['surname'], data['gender'], data['dob'], data['street'], data['locality'], 
+                  data['city'], data['country'], data['phone'], data['email'], data['hiring_date'], data['salary']))
+        connection.commit()
+        flash("Staff added successfully!", "success")
+    except Exception as e:
+        flash(f"Error: {e}", "danger")
+    return redirect(url_for('staff_management'))
+
+@app.route('/admin/remove-staff', methods=['POST'])
+def remove_staff():
+    try:
+        staff_id = request.form['staff_id']
+        with connection.cursor() as cursor:
+            cursor.execute("DELETE FROM staff WHERE staff_id = %s", (staff_id,))
+        connection.commit()
+        flash("Staff removed successfully!", "success")
+    except Exception as e:
+        flash(f"Error: {e}", "danger")
+    return redirect(url_for('staff_management'))
+
+@app.route('/admin/search-staff', methods=['GET'])
+def search_staff():
+    staff_id = request.args.get('staff_id')
+    try:
+        with connection.cursor() as cursor:
+            cursor.execute("SELECT * FROM staff WHERE staff_id = %s", (staff_id,))
+            staff = cursor.fetchone()
+        return render_template('admin/staff-management.html', staff_list=[staff] if staff else [])
+    except Exception as e:
+        flash(f"Error: {e}", "danger")
+        return redirect(url_for('staff_management'))
+
 
 # Flight Management
 @app.route('/admin/flight-management', methods=['GET', 'POST'])
@@ -107,9 +157,48 @@ def search_flight():
 def refund_management():
     return render_template('admin/refund-management.html')
 
-@app.route('/admin/user-management')
+# User Management
+
+@app.route('/admin/user-management', methods=['GET'])
 def user_management():
-    return render_template('admin/user-management.html')
+    try:
+        with connection.cursor() as cursor:
+            cursor.execute("SELECT * FROM user")
+            users = cursor.fetchall()
+        return render_template('admin/user-management.html', users=users)
+    except Exception as e:
+        flash(f"Error: {e}", "danger")
+        return redirect(url_for('admin_panel'))
+
+@app.route('/admin/add-user', methods=['POST'])
+def add_user():
+    try:
+        data = request.form
+        with connection.cursor() as cursor:
+            cursor.execute("""
+                INSERT INTO user (name, surname, gender, email, nationality, dob)
+                VALUES (%s, %s, %s, %s, %s, %s)
+            """, (data['name'], data['surname'], data['gender'], data['email'], data['nationality'], data['dob']))
+        connection.commit()
+        flash("User added successfully!", "success")
+    except Exception as e:
+        flash(f"Error: {e}", "danger")
+    return redirect(url_for('user_management'))
+
+@app.route('/admin/remove-user', methods=['POST'])
+def remove_user():
+    try:
+        user_id = request.form['user_id']
+        with connection.cursor() as cursor:
+            cursor.execute("DELETE FROM user WHERE user_id = %s", (user_id,))
+        connection.commit()
+        flash("User removed successfully!", "success")
+    except Exception as e:
+        flash(f"Error: {e}", "danger")
+    return redirect(url_for('user_management'))
+
+
+# Ticket Management
 
 @app.route('/admin/ticket-management')
 def ticket_management():

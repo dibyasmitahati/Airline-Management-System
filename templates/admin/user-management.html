@@ -4,11 +4,85 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>User Management</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin/user-management.css') }}">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
 <body>
-    <pre>
-        TODO : 1. Show all the users Option
-               2. Search Users Option
-    </pre>
+
+   <!-- Navbar -->
+   <nav class="navbar navbar-inverse">
+       <div class="container-fluid">
+           <div class="navbar-header">
+               <a class="navbar-brand" href="{{ url_for('index') }}">Airline-Z</a>
+           </div>
+           <ul class="nav navbar-nav navbar-right">
+               <li><a href="{{ url_for('admin_panel') }}">Home</a></li>
+               <li><a href="{{ url_for('staff_management') }}">Staff</a></li>
+               <li><a href="{{ url_for('flight_management') }}">Flights</a></li>
+               <li><a href="{{ url_for('refund_management') }}">Refund</a></li>
+               <li class="active"><a href="{{ url_for('user_management') }}">Users</a></li>
+               <li><a href="{{ url_for('ticket_management') }}">Ticket</a></li>
+           </ul>
+       </div>
+   </nav>
+
+   <div class="container">
+       <h2 class="text-center">User Management</h2>
+       <form action="{{ url_for('add_user') }}" method="POST" class="form-inline">
+           <input type="text" name="name" placeholder="First Name" class="form-control" required>
+           <input type="text" name="surname" placeholder="Surname" class="form-control" required>
+           <select name="gender" class="form-control" required>
+               <option value="">Gender</option>
+               <option value="Male">Male</option>
+               <option value="Female">Female</option>
+               <option value="Other">Other</option>
+           </select>
+           <input type="email" name="email" placeholder="Email" class="form-control" required>
+           <input type="text" name="nationality" placeholder="Nationality" class="form-control">
+           <input type="date" name="dob" class="form-control">
+           <button type="submit" class="btn btn-primary">Add User</button>
+       </form>
+       <hr>
+       <table class="table table-bordered table-striped">
+           <thead>
+               <tr>
+                   <th>User ID</th>
+                   <th>Name</th>
+                   <th>Surname</th>
+                   <th>Gender</th>
+                   <th>Email</th>
+                   <th>Actions</th>
+               </tr>
+           </thead>
+           <tbody>
+               {% for user in users %}
+               <tr>
+                   <td>{{ user.user_id }}</td>
+                   <td>{{ user.name }}</td>
+                   <td>{{ user.surname }}</td>
+                   <td>{{ user.gender }}</td>
+                   <td>{{ user.email }}</td>
+                   <td>
+                       <form action="{{ url_for('remove_user') }}" method="POST" style="display:inline;">
+                           <input type="hidden" name="user_id" value="{{ user.user_id }}">
+                           <button type="submit" class="btn btn-danger btn-sm">Remove</button>
+                       </form>
+                   </td>
+               </tr>
+               {% endfor %}
+           </tbody>
+       </table>
+   </div>
+
+   <!-- Footer -->
+   <footer class="footer">
+       <div class="container text-center" style="background-color: #222; color:#fff">
+           <p>&copy; 2025 Airline-Z. All rights reserved.</p>
+       </div>
+   </footer>
+
+   <script src="{{ url_for('static', filename='js/admin/user_management.js') }}"></script>
 </body>
 </html>
