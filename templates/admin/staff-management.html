@@ -12,7 +12,7 @@
 </head>
 <body>
 
-   <!-- Navbar -->
+    <!-- Navbar -->
     <nav class="navbar navbar-inverse navbar-fixed-top">
         <div class="container-fluid">
             <div class="navbar-header">
@@ -30,11 +30,15 @@
                     <li><a href="{{ url_for('flight_management') }}"><i class="fa fa-plane"></i> Flights</a></li>
                     <li><a href="{{ url_for('refund_management') }}"><i class="fa fa-money-bill"></i> Refund</a></li>
                     <li><a href="{{ url_for('user_management') }}"><i class="fa fa-user"></i> Users</a></li>
-                    <li><a href="{{ url_for('ticket_management') }}"><i class="fa fa-ticket"></i> Ticket</a></li>                    
+                    <li><a href="{{ url_for('ticket_management') }}"><i class="fa fa-ticket"></i> Ticket</a></li>
+                    <li><a href="{{ url_for('feedback_management')}}"><i class="fa fa-info-circle"></i> Feedback</a></li>
+                    <li><a href="{{ url_for('admin_logout') }}"><i class="fa fa-sign-out-alt"></i> Logout</a></li>
                 </ul>
             </div>
         </div>
     </nav>
+
+    <br><br><br>
 
    <div class="container">
        <h2>Staff Management</h2>
@@ -86,69 +90,169 @@
            <button type="submit" class="btn btn-success">Add Staff</button>
        </form>
 
-       <!-- Search Staff Form -->
-       <form id="search-staff-form" method="get" action="{{ url_for('search_staff') }}" class="form-inline">
-           <h3>Search Staff</h3>
-           <div class="form-group">
-               <input type="text" name="staff_id" class="form-control" placeholder="Staff ID">
-           </div>
-           <button type="submit" class="btn btn-info">Search</button>
-       </form>
+    <!-- Modify Staff Form -->
+    <form id="modify-staff-form" method="post" action="{{ url_for('modify_staff') }}" class="form-inline">
+        <h3>Modify Staff</h3>
+        {% if staff %}
+            <input type="hidden" name="staff_id" value="{{ staff.staff_id }}">
+            <div class="form-group">
+                <input type="text" name="name" class="form-control" value="{{ staff.name }}" required>
+            </div>
+            <div class="form-group">
+                <input type="text" name="surname" class="form-control" value="{{ staff.surname }}" required>
+            </div>
+            <div class="form-group">
+                <select name="gender" class="form-control" required>
+                    <option value="Male" {% if staff.gender == 'Male' %} selected {% endif %}>Male</option>
+                    <option value="Female" {% if staff.gender == 'Female' %} selected {% endif %}>Female</option>
+                    <option value="Other" {% if staff.gender == 'Other' %} selected {% endif %}>Other</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <input type="date" name="dob" class="form-control" value="{{ staff.dob }}" required>
+            </div>
+            <div class="form-group">
+                <input type="text" name="street" class="form-control" value="{{ staff.street }}" required>
+            </div>
+            <div class="form-group">
+                <input type="text" name="locality" class="form-control" value="{{ staff.locality }}" required>
+            </div>
+            <div class="form-group">
+                <input type="text" name="city" class="form-control" value="{{ staff.city }}" required>
+            </div>
+            <div class="form-group">
+                <input type="text" name="country" class="form-control" value="{{ staff.country }}" required>
+            </div>
+            <div class="form-group">
+                <input type="text" name="phone" class="form-control" value="{{ staff.phone }}" required>
+            </div>
+            <div class="form-group">
+                <input type="email" name="email" class="form-control" value="{{ staff.email }}" required>
+            </div>
+            <div class="form-group">
+                <input type="date" name="hiring_date" class="form-control" value="{{ staff.hiring_date }}" required>
+            </div>
+            <div class="form-group">
+                <input type="number" step="0.01" name="salary" class="form-control" value="{{ staff.salary }}" required>
+            </div>
+            <button type="submit" class="btn btn-warning">Modify Staff</button>
+        {% else %}
+            <p>No staff details available for modification.</p>
+        {% endif %}
+    </form>
 
-       <!-- Staff List -->
-       <h3>Staff List</h3>
-       <table class="table table-striped">
-           <thead>
-               <tr>
-                   <th>ID</th>
-                   <th>Name</th>
-                   <th>Surname</th>
-                   <th>Gender</th>
-                   <th>DOB</th>
-                   <th>Street</th>
-                   <th>Locality</th>
-                   <th>City</th>
-                   <th>Country</th>
-                   <th>Phone</th>
-                   <th>Email</th>
-                   <th>Hiring Date</th>
-                   <th>Salary</th>
-                   <th>Actions</th>
-               </tr>
-           </thead>
-           <tbody>
-               {% for staff in staff_list %}
-               <tr>
-                   <td>{{ staff.staff_id }}</td>
-                   <td>{{ staff.name }}</td>
-                   <td>{{ staff.surname }}</td>
-                   <td>{{ staff.gender }}</td>
-                   <td>{{ staff.dob }}</td>
-                   <td>{{ staff.street }}</td>
-                   <td>{{ staff.locality }}</td>
-                   <td>{{ staff.city }}</td>
-                   <td>{{ staff.country }}</td>
-                   <td>{{ staff.phone }}</td>
-                   <td>{{ staff.email }}</td>
-                   <td>{{ staff.hiring_date }}</td>
-                   <td>{{ staff.salary }}</td>
-                   <td>
-                       <form method="post" action="{{ url_for('remove_staff') }}" style="display:inline;">
-                           <input type="hidden" name="staff_id" value="{{ staff.staff_id }}">
-                           <button type="submit" class="btn btn-danger btn-sm">Remove</button>
-                       </form>
-                   </td>
-               </tr>
-               {% endfor %}
-           </tbody>
-       </table>
+    <!-- Search Staff Form -->
+    <form id="search-staff-form" method="get" action="{{ url_for('search_staff') }}" class="form-inline">
+        <h3>Search Staff</h3>
+        <div class="form-group">
+            <input type="text" name="staff_id" class="form-control" placeholder="Staff ID" required>
+        </div>
+        <button type="submit" class="btn btn-info">Search</button>
+    </form>
+
+    <!-- If staff is found, display it -->
+    {% if staff_list %}
+        <h3>Staff Found</h3>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Surname</th>
+                    <th>Gender</th>
+                    <th>DOB</th>
+                    <th>Street</th>
+                    <th>Locality</th>
+                    <th>City</th>
+                    <th>Country</th>
+                    <th>Phone</th>
+                    <th>Email</th>
+                    <th>Hiring Date</th>
+                    <th>Salary</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for staff in staff_list %}
+                    <tr>
+                        <td>{{ staff.staff_id }}</td>
+                        <td>{{ staff.name }}</td>
+                        <td>{{ staff.surname }}</td>
+                        <td>{{ staff.gender }}</td>
+                        <td>{{ staff.dob }}</td>
+                        <td>{{ staff.street }}</td>
+                        <td>{{ staff.locality }}</td>
+                        <td>{{ staff.city }}</td>
+                        <td>{{ staff.country }}</td>
+                        <td>{{ staff.phone }}</td>
+                        <td>{{ staff.email }}</td>
+                        <td>{{ staff.hiring_date }}</td>
+                        <td>{{ staff.salary }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>No staff found with the given ID.</p>
+    {% endif %}
+
+
+    <!-- Staff List -->
+    <h3>Staff List</h3>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Surname</th>
+                <th>Gender</th>
+                <th>DOB</th>
+                <th>Street</th>
+                <th>Locality</th>
+                <th>City</th>
+                <th>Country</th>
+                <th>Phone</th>
+                <th>Email</th>
+                <th>Hiring Date</th>
+                <th>Salary</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for staff in staff_list %}
+            <tr>
+                <td>{{ staff.staff_id }}</td>
+                <td>{{ staff.name }}</td>
+                <td>{{ staff.surname }}</td>
+                <td>{{ staff.gender }}</td>
+                <td>{{ staff.dob }}</td>
+                <td>{{ staff.street }}</td>
+                <td>{{ staff.locality }}</td>
+                <td>{{ staff.city }}</td>
+                <td>{{ staff.country }}</td>
+                <td>{{ staff.phone }}</td>
+                <td>{{ staff.email }}</td>
+                <td>{{ staff.hiring_date }}</td>
+                <td>{{ staff.salary }}</td>
+                <td>
+                    <a href="{{ url_for('modify_staff_form', staff_id=staff.staff_id) }}" class="btn btn-warning btn-sm">Modify</a>
+                    <form method="post" action="{{ url_for('remove_staff') }}" style="display:inline;">
+                        <input type="hidden" name="staff_id" value="{{ staff.staff_id }}">
+                        <button type="submit" class="btn btn-danger btn-sm">Remove</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+        
+    </table>
+
    </div>
 
    <!-- Footer -->
    <footer class="footer">
-       <div class="container text-center" style="background-color: #222;">
-           <p>&copy; 2025 Airline-Z. All rights reserved.</p>
-       </div>
+        <div class="container text-center" style="background-color: #222; color:#fff">
+            <p>&copy; 2025 Airline-Z. All rights reserved.</p>
+        </div>
    </footer>
 
    <script src="{{ url_for('static', filename='js/admin/staff_management.js') }}"></script>

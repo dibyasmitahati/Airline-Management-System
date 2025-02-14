@@ -4,12 +4,67 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Refund Management</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin/refund-management.css') }}">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
 <body>
-    <pre>
-        TODO : 1. Clear Refund Option
-               2. Turn Down Refund Option
-               3. Report Fraud Option
-    </pre>
+    <!-- Navbar -->
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#adminNavbar">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="{{ url_for('index') }}">Airline-Z</a>
+            </div>
+            <div class="collapse navbar-collapse" id="adminNavbar">
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="{{ url_for('admin_panel') }}"><i class="fa fa-home"></i> Home</a></li>
+                    <li><a href="{{ url_for('staff_management') }}"><i class="fa fa-users"></i> Staff</a></li>
+                    <li><a href="{{ url_for('flight_management') }}"><i class="fa fa-plane"></i> Flights</a></li>
+                    <li><a href="{{ url_for('refund_management') }}"><i class="fa fa-money-bill"></i> Refund</a></li>
+                    <li><a href="{{ url_for('user_management') }}"><i class="fa fa-user"></i> Users</a></li>
+                    <li><a href="{{ url_for('ticket_management') }}"><i class="fa fa-ticket"></i> Ticket</a></li>
+                    <li><a href="{{ url_for('feedback_management')}}"><i class="fa fa-info-circle"></i> Feedback</a></li>
+                    <li><a href="{{ url_for('admin_logout') }}"><i class="fa fa-sign-out-alt"></i> Logout</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <br><br><br>
+
+    <!--Refund Section-->
+    <div class="container">
+        <h1>Refund Management</h1>
+        <table class="table table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th>Refund ID</th>
+                    <th>User ID</th>
+                    <th>Ticket ID</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="refundTableBody">
+                <!-- Refund data will be loaded here -->
+            </tbody>
+        </table>        
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container text-center">
+            <p>&copy; 2025 Airline-Z. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="{{ url_for('static', filename='js/admin/refund_management.js')}}"></script>
 </body>
 </html>

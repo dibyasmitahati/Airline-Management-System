@@ -34,3 +34,11 @@ h2 {
     border-radius: 5px;
 }
 
+footer {
+    background-color: #222;
+    color: #fff;
+    padding: 10px 0;
+    position: relative;
+    bottom: 0;
+    width: 100%;
+}

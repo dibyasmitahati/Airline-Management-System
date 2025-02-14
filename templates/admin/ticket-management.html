@@ -4,10 +4,96 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ticket Management</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin/ticket-management.css') }}">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
 <body>
-    <pre>
-        TODO : 1. Retrieve Ticket information option
-    </pre>
+    <!-- Navbar -->
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#adminNavbar">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="{{ url_for('index') }}">Airline-Z</a>
+            </div>
+            <div class="collapse navbar-collapse" id="adminNavbar">
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="{{ url_for('admin_panel') }}"><i class="fa fa-home"></i> Home</a></li>
+                    <li><a href="{{ url_for('staff_management') }}"><i class="fa fa-users"></i> Staff</a></li>
+                    <li><a href="{{ url_for('flight_management') }}"><i class="fa fa-plane"></i> Flights</a></li>
+                    <li><a href="{{ url_for('refund_management') }}"><i class="fa fa-money-bill"></i> Refund</a></li>
+                    <li><a href="{{ url_for('user_management') }}"><i class="fa fa-user"></i> Users</a></li>
+                    <li><a href="{{ url_for('ticket_management') }}"><i class="fa fa-ticket"></i> Ticket</a></li>
+                    <li><a href="{{ url_for('feedback_management')}}"><i class="fa fa-info-circle"></i> Feedback</a></li>
+                    <li><a href="{{ url_for('admin_logout') }}"><i class="fa fa-sign-out-alt"></i> Logout</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <br><br><br>
+
+    <!--Ticket Section-->
+    <div class="container">
+        <h1>Ticket Management</h1>
+        <table class="table table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th>Ticket ID</th>
+                    <th>Flight ID</th>
+                    <th>Passenger Name</th>
+                    <th>Passenger Age</th>
+                    <th>Passenger Address</th>
+                    <th>Source</th>
+                    <th>Destination</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="ticketBodyTable">
+                {% if tickets %}
+                    {% for ticket in tickets %}
+                        <tr>
+                            <td>{{ ticket.ticket_id }}</td>
+                            <td>{{ ticket.flight_id }}</td>
+                            <td>{{ ticket.name }}</td>  <!-- Name from user -->
+                            <td>{{ ticket.age }}</td>   <!-- Age from passenger -->
+                            <td>{{ ticket.address }}</td>  <!-- Address from passenger -->
+                            <td>{{ ticket.source }}</td>
+                            <td>{{ ticket.destination }}</td>
+                            <td>{{ ticket.status }}</td>
+                            <td>
+                                <!-- <button class="btn btn-warning btn-sm">Modify</button> -->
+                                <form method="post" action="{{ url_for('remove_ticket') }}" style="display:inline;">
+                                    <input type="hidden" name="ticket_id" value="{{ ticket.ticket_id }}">
+                                    <button type="submit" class="btn btn-danger btn-sm">Remove</button>
+                                </form>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                {% else %}
+                    <tr>
+                        <td colspan="9" class="text-center">No tickets found.</td>
+                    </tr>
+                {% endif %}
+            </tbody>
+        </table>        
+    </div>
+
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container text-center">
+            <p>&copy; 2025 Airline-Z. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="{{ url_for('static', filename='js/admin/ticket_management.js')}}"></script>
 </body>
 </html>

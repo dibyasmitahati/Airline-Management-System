@@ -11,7 +11,6 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
 <body>
-
     <!-- Navbar -->
     <nav class="navbar navbar-inverse navbar-fixed-top">
         <div class="container-fluid">
@@ -31,6 +30,8 @@
                     <li><a href="{{ url_for('refund_management') }}"><i class="fa fa-money-bill"></i> Refund</a></li>
                     <li><a href="{{ url_for('user_management') }}"><i class="fa fa-user"></i> Users</a></li>
                     <li><a href="{{ url_for('ticket_management') }}"><i class="fa fa-ticket"></i> Ticket</a></li>
+                    <li><a href="{{ url_for('feedback_management')}}"><i class="fa fa-info-circle"></i> Feedback</a></li>
+                    <li><a href="{{ url_for('admin_logout') }}"><i class="fa fa-sign-out-alt"></i> Logout</a></li>
                 </ul>
             </div>
         </div>
@@ -40,9 +41,14 @@
     <div class="container" style="margin-top: 70px;">
         <div class="row text-center">
             <h1>Welcome to Airline-Z Admin Panel</h1>
-            <p class="lead">Manage flights, staff, users, refunds, and tickets all in one place.</p>
+            <p class="lead">Manage flights, staff, users, refunds, tickets, and feedback all in one place.</p>
         </div>
+    
+        <br><br><br>
+    
+        <!-- First Row of Panels -->
         <div class="row">
+            <!-- Staff Management -->
             <div class="col-md-4">
                 <div class="panel panel-primary">
                     <div class="panel-heading text-center"><i class="fa fa-users fa-3x"></i></div>
@@ -52,6 +58,8 @@
                     </div>
                 </div>
             </div>
+    
+            <!-- Flight Management -->
             <div class="col-md-4">
                 <div class="panel panel-success">
                     <div class="panel-heading text-center"><i class="fa fa-plane fa-3x"></i></div>
@@ -61,6 +69,8 @@
                     </div>
                 </div>
             </div>
+    
+            <!-- Refund Management -->
             <div class="col-md-4">
                 <div class="panel panel-info">
                     <div class="panel-heading text-center"><i class="fa fa-money-bill fa-3x"></i></div>
@@ -71,8 +81,11 @@
                 </div>
             </div>
         </div>
+    
+        <!-- Second Row of Panels -->
         <div class="row">
-            <div class="col-md-6">
+            <!-- User Management -->
+            <div class="col-md-4">
                 <div class="panel panel-warning">
                     <div class="panel-heading text-center"><i class="fa fa-user fa-3x"></i></div>
                     <div class="panel-body text-center">
@@ -81,7 +94,9 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-6">
+    
+            <!-- Ticket Management -->
+            <div class="col-md-4">
                 <div class="panel panel-danger">
                     <div class="panel-heading text-center"><i class="fa fa-ticket fa-3x"></i></div>
                     <div class="panel-body text-center">
@@ -90,8 +105,20 @@
                     </div>
                 </div>
             </div>
+    
+            <!-- Feedback Management -->
+            <div class="col-md-4">
+                <div class="panel panel-default">
+                    <div class="panel-heading text-center"><i class="fa fa-comments fa-3x"></i></div>
+                    <div class="panel-body text-center">
+                        <h4>Manage Feedback</h4>
+                        <a href="{{ url_for('feedback_management') }}" class="btn btn-default">Go to Feedback</a>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
+
 
     <!-- Footer -->
     <footer class="footer">

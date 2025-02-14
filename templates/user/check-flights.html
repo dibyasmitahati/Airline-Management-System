@@ -6,29 +6,39 @@
     <title>Check Flights</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/user/check-flights.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
 <body>
-    <!-- Navbar -->
-    <nav class="navbar navbar-inverse navbar-custom">
-        <div class="container-fluid">
-            <div class="navbar-header">
-                <a class="navbar-brand" href="#">Airline-Z</a>
-            </div>
+   <!-- Navbar -->
+   <nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#adminNavbar">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="{{ url_for('index') }}">Airline-Z</a>
+        </div>
+        <div class="collapse navbar-collapse" id="adminNavbar">
             <ul class="nav navbar-nav navbar-right">
-                <li><a href="{{ url_for('index') }}">Home</a></li>
-                <li class="active"><a href="{{ url_for('check_flights') }}">Check Flights</a></li>
-                <li><a href="{{ url_for('book_ticket') }}">Book Ticket</a></li>
-                <li><a href="{{ url_for('cancel_ticket') }}">Cancel Ticket</a></li>
-                <li><a href="{{ url_for('about_us') }}">About Us</a></li>
-                <li><a href="{{ url_for('contact_us') }}">Contact Us</a></li>
+                <li><a href="{{ url_for('user_panel') }}"><i class="fa fa-home"></i> Home</a></li>
+                <li class="active"><a href="{{ url_for('check_flights') }}"><i class="fa fa-plane"></i> Check Flights</a></li>
+                <li><a href="{{ url_for('book_ticket') }}"><i class="fa fa-ticket"></i> Book Ticket</a></li>
+                <li><a href="{{ url_for('cancel_ticket') }}"><i class="fa fa-ticket"></i> Cancel Ticket</a></li>
+                <li><a href="{{ url_for('about_us') }}"><i class="fa fa-info-circle"></i> About Us</a></li>
+                <li><a href="{{ url_for('contact_us') }}"><i class="fa fa-envelope"></i> Contact Us</a></li>
             </ul>
         </div>
-    </nav>
+    </div>
+</nav>
     
     <!-- Flight Search Section -->
     <div class="container">
+        <br><br><br>
         <header class="text-center">
             <h2>Find Your Flight</h2>
             <hr>
@@ -66,6 +76,11 @@
                     </div>
                 </form>
             </div>
+        </div>
+
+        <!-- Flight Results Section -->
+        <div id="flight-results" class="animate__animated animate__fadeIn">
+            <!-- Results will be dynamically populated here -->
         </div>
     </div>
 

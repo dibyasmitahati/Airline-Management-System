@@ -18,6 +18,11 @@
     color: #ffffff !important;
 }
 
+.navbar-nav li.active a {
+    color: #fff !important;
+    background-color: #000 !important;
+}
+
 /* Flight Search Section */
 h2 {
     color: #2c3e50;
@@ -41,12 +46,47 @@ input, select, button {
     margin-top: 10px;
 }
 
-/* Footer Styling */
-.footer {
-    background-color: #222222;
-    color: #f8f9fa;
-    padding: 10px 0;
+/* Flight Results Section */
+#flight-results {
+    margin-top: 30px;
 }
+.flight-card {
+    background-color: #ffffff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 20px;
+    margin-bottom: 15px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+.flight-card:hover {
+    transform: translateY(-5px);
+}
+.flight-card h4 {
+    color: #2c3e50;
+    font-weight: bold;
+}
+.flight-card p {
+    margin: 5px 0;
+    color: #555;
+}
+.no-flights {
+    text-align: center;
+    color: #ff4d4d;
+    font-weight: bold;
+    font-size: 1.2em;
+}
+
+/* Footer Styling */
+footer {
+    background-color: #222;
+    color: #fff;
+    padding: 10px 0;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}
+
 .footer p {
     margin: 0;
 }

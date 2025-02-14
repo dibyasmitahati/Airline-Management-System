@@ -31,23 +31,17 @@ body {
     background-color: #5bc0de;
 }
 
-/* Footer Styling */
-.footer {
-    background-color: #222;
-    color: #ccc;
-    padding: 15px;
+
+h2, h3 {
+    color: #333;
     text-align: center;
-    margin-top: 30px;
 }
 
-.footer a {
-    color: #fff;
-    text-decoration: none;
-}
 
 /* Table Styling */
 table {
     margin: 20px auto;
+    margin-bottom: 20px;
     width: 90%;
     border-collapse: collapse;
     background-color: #fff;
@@ -75,6 +69,7 @@ table tr:hover {
     background-color: #e8f8ff;
     cursor: pointer;
 }
+
 
 /* Buttons */
 .btn {
@@ -104,11 +99,28 @@ table tr:hover {
     background-color: #c82333;
 }
 
+/* Button Group */
+.btn-group {
+    display: flex;
+    justify-content: center;  /* Centers the buttons */
+    gap: 10px;  /* Adds spacing between the buttons */
+}
+
+.btn-group .btn {
+    flex: 1;  /* Makes each button take equal space */
+    text-align: center;  /* Centers text inside the buttons */
+}
+
+/* Optionally, if the buttons should have fixed sizes */
+.btn-group .btn-sm {
+    width: auto;  /* Makes the small buttons have automatic width */
+}
+
+
 /* Form Styling */
 form {
     margin: 20px auto;
     width: 90%;
-    padding: 15px;
     background-color: #fff;
     border-radius: 8px;
     box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
@@ -140,4 +152,46 @@ form button {
 
 form button:hover {
     background-color: #218838;
+}
+
+/* Footer Styling */
+footer {
+    background-color: #222;
+    color: #fff;
+    padding: 10px 0;
+    position: relative; 
+    width: 100%;
+    bottom: 0;
+}
+
+/* Modify Staff Form Styling */
+#modify-staff-form {
+    background-color: #f8f9fa;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+}
+
+#modify-staff-form .form-group {
+    margin-bottom: 15px;
+}
+
+#modify-staff-form button {
+    background-color: #ffc107;
+}
+
+#modify-staff-form button:hover {
+    background-color: #e0a800;
+}
+
+.btn-warning {
+    background-color: #f0ad4e;
+    color: white;
+    border: none;
+}
+
+.btn-warning:hover {
+    background-color: #ec971f;
+    color: white;
 }

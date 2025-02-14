@@ -29,12 +29,13 @@
         .footer {
             text-align: center;
             padding: 10px;
-            background-color: #f1f1f1;
+            background-color: #222;
+            color:#fff
         }
         .background-wrapper {
             background-image: url('images/airline/aa.jpg');
             background-size: cover;
-            color: white;
+            color: rgb(11, 11, 11);
             padding: 100px 0;
             text-align: center;
         }
@@ -50,7 +51,7 @@
             </div>
             <ul class="nav navbar-nav navbar-right">
                 <li><a href="{{url_for('index')}}">Home</a></li>
-                <li><a href="{{url_for('user_panel')}}">User</a></li>
+                <li><a href="{{ url_for('user_login') }}">User</a></li>
                 <li><a href="{{url_for('admin_panel')}}">Admin</a></li>
             </ul>
         </div>
@@ -104,6 +105,13 @@
                     <p>Access and modify your bookings anytime.</p>
                 </div>
             </div>
+
+            <div class="col-sm-6 col-md-4">
+                <div class="service">
+                    <h3>Cancel Tickets</h3>
+                    <p>Cancel your bookings with ease.</p>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -115,7 +123,7 @@
 
     <!-- Footer -->
     <footer class="footer">
-        <p>&copy; 2024 Airline-Z. All rights reserved.</p>
+        <p>&copy; 2025 Airline-Z. All rights reserved.</p>
     </footer>
 
     <script src="{{url_for('static', filename='js/index.js')}}"></script>

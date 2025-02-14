@@ -82,16 +82,13 @@ table tr:nth-child(even) {
     background-color: #f2f2f2;
 }
 
-/* Footer */
-.footer {
-    background-color: #222;
-    color: #ccc;
-    padding: 15px;
-    text-align: center;
-    margin-top: 30px;
-}
 
-.footer a {
+/* Footer Styling */
+footer {
+    background-color: #222;
     color: #fff;
-    text-decoration: none;
+    padding: 1px 0; /* Reduced the padding to decrease footer height */
+    position: relative;
+    width: 100%;
+    bottom: 0;
 }

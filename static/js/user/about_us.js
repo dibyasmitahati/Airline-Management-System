@@ -1,4 +1,5 @@
 $(document).ready(function () {
+    // Smooth Scroll for Internal Links
     $('a').on('click', function (event) {
         if (this.hash !== "") {
             event.preventDefault();
@@ -14,4 +15,7 @@ $(document).ready(function () {
             );
         }
     });
+
+    // Add Animation to the About Us Section on Page Load
+    $('#about-us').css('opacity', 0).animate({ opacity: 1 }, 1500);
 });
