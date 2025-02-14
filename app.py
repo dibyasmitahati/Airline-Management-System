@@ -452,26 +452,50 @@ def feedback_management():
 def get_feedback():
     try:
         conn = get_db_connection()
-        feedback = conn.execute("SELECT * FROM message").fetchall()
+        cursor = conn.cursor()
+        cursor.execute("SELECT * FROM message")
+        feedback = cursor.fetchall()
         conn.close()
-        return jsonify(feedback)
+
+        # Convert database rows to JSON serializable format
+        feedback_list = [
+            {
+                "message_id": row["message_id"], 
+                "message": row["message"],
+                "message_of_review": row["message_of_review"],
+                "message_email": row["message_email"],
+                "message_author": row["message_author"],
+                "author_country": row["author_country"],
+            }
+            for row in feedback
+        ]
+        return jsonify(feedback_list)
+    
     except Exception as e:
         print(f"Error fetching feedback: {e}")
-        return jsonify([])
+        return jsonify({"error": "Failed to fetch feedback"}), 500
 
 # Delete Feedback
 @app.route('/admin/delete-feedback/<int:message_id>', methods=['POST'])
 def delete_feedback(message_id):
     try:
         conn = get_db_connection()
-        conn.execute("DELETE FROM message WHERE message_id = ?", (message_id,))
+        cursor = conn.cursor()
+        cursor.execute("DELETE FROM message WHERE message_id = ?", (message_id,))
+        
+        if cursor.rowcount == 0:  # No row found with given message_id
+            conn.close()
+            return jsonify({"error": "Feedback not found."}), 404  
+        
         conn.commit()
         conn.close()
         return jsonify({"message": "Feedback deleted successfully."})
+    
     except Exception as e:
         print(f"Error deleting feedback: {e}")
         return jsonify({"error": str(e)}), 500
-    
+
+# User Management
 
 @app.route('/user/register', methods=['GET', 'POST'])
 def user_register():
@@ -492,10 +516,39 @@ def user_logout():
 def user_panel():
     return render_template('user/user-panel.html')
 
-# Check Flights
-@app.route('/user/check-flights')
+# Check Flights Route (Handles Both Rendering and Searching)
+@app.route('/user/check-flights', methods=['GET', 'POST'])
 def check_flights():
-    return render_template('user/check-flights.html')
+    if request.method == 'GET':
+        return render_template('user/check-flights.html')
+
+    elif request.method == 'POST':  # Searching for flights
+        try:
+            data = request.get_json()
+            source = data.get('source')
+            destination = data.get('destination')
+            departure_date = data.get('departure_date')
+
+            if not source or not destination or not departure_date:
+                return jsonify({"status": "error", "message": "Missing required fields"}), 400
+
+            conn = get_db_connection()
+            cursor = conn.execute("""
+                SELECT flight_id, source, destination, departure_time, duration 
+                FROM flights 
+                WHERE source = ? AND destination = ? AND DATE(departure_time) = ?
+            """, (source, destination, departure_date))
+
+            flights = cursor.fetchall()
+            conn.close()
+
+            if flights:
+                return jsonify({"status": "success", "flights": [dict(flight) for flight in flights]})
+            else:
+                return jsonify({"status": "error", "message": "No flights available for the selected route and date."}), 404
+        except Exception as e:
+            print(f"Error searching flights: {e}")
+            return jsonify({"status": "error", "message": "An internal error occurred"}), 500
 
 # Book Ticket
 @app.route('/user/book-ticket')

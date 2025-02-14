@@ -1,10 +1,14 @@
 $(document).ready(function () {
-    // Fetch and display feedback
     function loadFeedback() {
         $.ajax({
             url: '/admin/get-feedback',
             method: 'GET',
             success: function (data) {
+                if (data.error) {
+                    $('#feedbackTable').html(`<tr><td colspan="7" class="text-center">${data.error}</td></tr>`);
+                    return;
+                }
+
                 let feedbackHtml = '';
                 data.forEach((feedback, index) => {
                     feedbackHtml += `
@@ -31,24 +35,30 @@ $(document).ready(function () {
         });
     }
 
-    // Delete feedback
     $(document).on('click', '.delete-feedback', function () {
         const messageId = $(this).data('id');
         if (confirm('Are you sure you want to delete this feedback?')) {
             $.ajax({
                 url: `/admin/delete-feedback/${messageId}`,
                 method: 'POST',
-                success: function () {
-                    alert('Feedback deleted successfully.');
-                    loadFeedback();
+                success: function (response) {
+                    if (response.error) {
+                        alert('Error: ' + response.error);
+                    } else {
+                        alert(response.message);
+                        loadFeedback();
+                    }
                 },
-                error: function () {
-                    alert('Failed to delete feedback. Please try again.');
+                error: function (xhr) {
+                    if (xhr.status === 404) {
+                        alert('Error: Feedback not found.');
+                    } else {
+                        alert('Failed to delete feedback. Please try again.');
+                    }
                 },
             });
         }
     });
 
-    // Load feedback on page load
     loadFeedback();
 });
