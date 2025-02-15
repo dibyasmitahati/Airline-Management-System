@@ -1,7 +1,7 @@
 $(document).ready(function () {
     function loadRefunds() {
         $.ajax({
-            url: '/get_refunds',
+            url: '/admin/get-refunds',  // Corrected URL
             method: 'GET',
             success: function (data) {
                 const refundTable = $('#refundTableBody');
@@ -10,7 +10,6 @@ $(document).ready(function () {
                     refundTable.append(`
                         <tr>
                             <td>${refund.refund_id}</td>
-                            <td>${refund.user_id}</td>
                             <td>${refund.ticket_id}</td>
                             <td>${refund.status}</td>
                             <td>
@@ -21,13 +20,16 @@ $(document).ready(function () {
                         </tr>
                     `);
                 });
+            },
+            error: function (xhr, status, error) {
+                console.error("Error fetching refunds:", error);
             }
         });
     }
 
     window.clearRefund = function (refundId) {
         if (confirm('Are you sure you want to clear this refund?')) {
-            $.post('/clear_refund', { refund_id: refundId }, function () {
+            $.post('/admin/clear-refund', { refund_id: refundId }, function () {
                 loadRefunds();
             });
         }
@@ -35,7 +37,7 @@ $(document).ready(function () {
 
     window.declineRefund = function (refundId) {
         if (confirm('Are you sure you want to decline this refund?')) {
-            $.post('/decline_refund', { refund_id: refundId }, function () {
+            $.post('/admin/decline-refund', { refund_id: refundId }, function () {
                 loadRefunds();
             });
         }
@@ -43,7 +45,7 @@ $(document).ready(function () {
 
     window.reportFraud = function (refundId) {
         if (confirm('Are you sure you want to report this as fraud?')) {
-            $.post('/report_fraud', { refund_id: refundId }, function () {
+            $.post('/admin/report-fraud', { refund_id: refundId }, function () {
                 loadRefunds();
             });
         }

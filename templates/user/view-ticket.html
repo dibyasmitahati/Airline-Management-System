@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Ticket</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/user/view-ticket.css') }}">
+</head>
+<body>
+    <div class="container">
+        <header class="text-center">
+            <h2>Your Ticket</h2>
+            <hr>
+        </header>
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <h4>Ticket ID: {{ ticket.ticket_id }}</h4>
+                <p><strong>Flight ID:</strong> {{ ticket.flight_id }}</p>
+                <p><strong>From:</strong> {{ ticket.source }}</p>
+                <p><strong>To:</strong> {{ ticket.destination }}</p>
+                <p><strong>Departure:</strong> {{ ticket.departure_time }}</p>
+                <p><strong>Duration:</strong> {{ ticket.duration }}</p>
+                <p><strong>Seat No:</strong> {{ ticket.seat_no }}</p>
+                <p><strong>Class:</strong> {{ ticket.flight_class }}</p>
+                <p><strong>Fare:</strong> ${{ ticket.fare }}</p>
+                <p><strong>Status:</strong> {{ ticket.status }}</p>
+                <p><strong>Passenger:</strong> {{ ticket.name }} {{ ticket.surname }}</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -48,8 +48,7 @@
                     <th>Ticket ID</th>
                     <th>Flight ID</th>
                     <th>Passenger Name</th>
-                    <th>Passenger Age</th>
-                    <th>Passenger Address</th>
+                    <th>Seat No.</th>
                     <th>Source</th>
                     <th>Destination</th>
                     <th>Status</th>
@@ -62,14 +61,12 @@
                         <tr>
                             <td>{{ ticket.ticket_id }}</td>
                             <td>{{ ticket.flight_id }}</td>
-                            <td>{{ ticket.name }}</td>  <!-- Name from user -->
-                            <td>{{ ticket.age }}</td>   <!-- Age from passenger -->
-                            <td>{{ ticket.address }}</td>  <!-- Address from passenger -->
+                            <td>{{ ticket.name }} {{ ticket.surname }}</td>
+                            <td>{{ ticket.seat_no }}</td>  <!-- Display seat number -->
                             <td>{{ ticket.source }}</td>
                             <td>{{ ticket.destination }}</td>
                             <td>{{ ticket.status }}</td>
                             <td>
-                                <!-- <button class="btn btn-warning btn-sm">Modify</button> -->
                                 <form method="post" action="{{ url_for('remove_ticket') }}" style="display:inline;">
                                     <input type="hidden" name="ticket_id" value="{{ ticket.ticket_id }}">
                                     <button type="submit" class="btn btn-danger btn-sm">Remove</button>
@@ -79,13 +76,12 @@
                     {% endfor %}
                 {% else %}
                     <tr>
-                        <td colspan="9" class="text-center">No tickets found.</td>
+                        <td colspan="8" class="text-center">No tickets found.</td>
                     </tr>
                 {% endif %}
             </tbody>
         </table>        
     </div>
-
 
     <!-- Footer -->
     <footer class="footer">

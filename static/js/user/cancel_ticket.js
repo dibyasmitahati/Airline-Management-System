@@ -1,20 +1,29 @@
-// document.getElementById('cancel-ticket-form').addEventListener('submit', function (event) {
-//     event.preventDefault();
+document.getElementById('cancel-ticket-form').addEventListener('submit', function (event) {
+    event.preventDefault();  // Prevent the default form submission
 
-//     // Retrieve form data
-//     const ticketId = document.getElementById('ticket-id').value;
+    const ticketId = document.getElementById('ticket-id').value;
 
-//     // Basic validation
-//     if (!ticketId) {
-//         alert('Please enter a valid Ticket ID.');
-//         return;
-//     }
+    if (!ticketId) {
+        alert('Please enter a valid Ticket ID.');
+        return;
+    }
 
-//     // Simulate ticket cancellation process (replace with an API/database call)
-//     console.log('Cancelling ticket...');
-//     console.log(`Ticket ID: ${ticketId}`);
-
-//     // Display success message or redirect
-//     alert('Your ticket has been successfully canceled!');
-//     document.getElementById('cancel-ticket-form').reset();
-// });
+    fetch('/user/cancel-ticket', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ticket_id: ticketId }),
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.status === "success") {
+            alert('Ticket canceled successfully! A refund has been initiated.');
+            document.getElementById('cancel-ticket-form').reset();
+        } else {
+            alert(data.message);
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('An error occurred while canceling the ticket.');
+    });
+});

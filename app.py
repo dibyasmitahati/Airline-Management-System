@@ -1,7 +1,7 @@
 # app.py
 from flask import Flask, render_template, request, redirect, url_for, flash, session, jsonify
 from functools import wraps
-import sqlite3
+import sqlite3, datetime
 from werkzeug.security import generate_password_hash, check_password_hash
 
 # Flask App Initialization
@@ -239,9 +239,7 @@ def search_flight():
         flash(f"Error: {e}", "danger")
         return redirect(url_for('flight_management'))
 
-# Refund Management
-
-# Page Rendering
+# Refund Management Page
 @app.route('/admin/refund-management')
 def refund_management():
     return render_template('admin/refund-management.html')
@@ -253,7 +251,9 @@ def get_refunds():
         conn = get_db_connection()
         refunds = conn.execute("SELECT * FROM refunds").fetchall()
         conn.close()
-        return jsonify(refunds)
+        # Convert rows to a list of dictionaries
+        refunds_list = [dict(row) for row in refunds]
+        return jsonify(refunds_list)
     except Exception as e:
         print(f"Error fetching refunds: {e}")
         return jsonify([])
@@ -351,13 +351,22 @@ def ticket_management():
     try:
         conn = get_db_connection()
         tickets = conn.execute("""
-            SELECT ticket.ticket_id, flight.source, flight.destination, 
-                   passenger.passenger_id, user.name, user.surname, 
-                   ticket.date_of_journey, ticket.flight_class, ticket.fare, ticket.status
-            FROM ticket
-            JOIN flight ON ticket.flight_id = flight.flight_id
-            JOIN passenger ON ticket.passenger_id = passenger.passenger_id
-            JOIN user ON passenger.user_id = user.user_id
+                                    SELECT 
+                                    ticket.ticket_id, 
+                                    ticket.flight_id,  
+                                    flight.source, 
+                                    flight.destination, 
+                                    user.name, 
+                                    user.surname, 
+                                    ticket.seat_no,  -- Fetch seat number
+                                    ticket.date_of_journey, 
+                                    ticket.flight_class, 
+                                    ticket.fare, 
+                                    ticket.status
+                                FROM ticket
+                                JOIN flight ON ticket.flight_id = flight.flight_id
+                                JOIN passenger ON ticket.passenger_id = passenger.passenger_id
+                                JOIN user ON passenger.user_id = user.user_id
         """).fetchall()
         conn.close()
         return render_template('admin/ticket-management.html', tickets=tickets)
@@ -579,17 +588,139 @@ def user_logout():
 def user_panel():
     return render_template('user/user-panel.html')
 
-@app.route('/user/book-ticket')
+import random
+
+@app.route('/book-ticket', methods=['GET', 'POST'])
 @login_required
 def book_ticket():
-    return render_template('user/book-ticket.html')
+    if request.method == 'GET':
+        # Display the booking form
+        flight_id = request.args.get('flight_id')
+        if not flight_id:
+            flash("No flight selected. Please select a flight first.", "warning")
+            return redirect(url_for('check_flights'))
 
-@app.route('/user/cancel-ticket')
+        # Generate a random fare between 100 and 1000
+        random_fare = round(random.uniform(100, 1000), 2)
+        return render_template('user/book-ticket.html', flight_id=flight_id, fare=random_fare)
+
+    elif request.method == 'POST':
+        # Process the booking form
+        try:
+            data = request.form
+            user_id = session.get('user_id')
+            flight_id = data.get('flight_id')
+            fare = float(data.get('fare'))  # Get the fare from the form
+
+            # Insert passenger details
+            conn = get_db_connection()
+            cursor = conn.execute("""
+                INSERT INTO passenger (user_id)
+                VALUES (?)
+            """, (user_id,))
+            passenger_id = cursor.lastrowid
+
+            # Insert ticket details
+            conn.execute("""
+                INSERT INTO ticket (
+                    flight_id, passenger_id, seat_no, date_of_journey, flight_class, fare, status
+                ) VALUES (?, ?, ?, ?, ?, ?, ?)
+            """, (
+                flight_id, passenger_id, 'A1', datetime.datetime.now().strftime('%Y-%m-%d'), 'Economy', fare, 'Confirmed'
+            ))
+            ticket_id = cursor.lastrowid
+
+            conn.commit()
+            conn.close()
+
+            flash("Booking successful! Your ticket has been booked.", "success")
+            return redirect(url_for('view_ticket', ticket_id=ticket_id))
+        except Exception as e:
+            print(f"Error processing booking: {e}")
+            flash("An error occurred while processing your booking. Please try again.", "danger")
+            return redirect(url_for('book_ticket', flight_id=data.get('flight_id')))
+
+@app.route('/view-ticket')
+@login_required
+def view_ticket():
+    ticket_id = request.args.get('ticket_id')
+    if not ticket_id:
+        return redirect(url_for('user_panel'))
+
+    conn = get_db_connection()
+    cursor = conn.execute("""
+        SELECT t.ticket_id, t.flight_id, t.seat_no, t.date_of_journey, t.flight_class, t.fare, t.status,
+               f.source, f.destination, f.departure_time, f.duration,
+               u.name, u.surname
+        FROM ticket t
+        JOIN flight f ON t.flight_id = f.flight_id
+        JOIN passenger p ON t.passenger_id = p.passenger_id
+        JOIN user u ON p.user_id = u.user_id
+        WHERE t.ticket_id = ?
+    """, (ticket_id,))
+    ticket = cursor.fetchone()
+    conn.close()
+
+    if not ticket:
+        flash("Ticket not found.", "danger")
+        return redirect(url_for('user_panel'))
+
+    return render_template('user/view-ticket.html', ticket=ticket)
+
+# Cancel Ticket Route
+@app.route('/user/cancel-ticket', methods=['GET', 'POST'])
 @login_required
 def cancel_ticket():
-    return render_template('user/cancel-ticket.html')
+    if request.method == 'GET':
+        # Render the cancel ticket page
+        return render_template('user/cancel-ticket.html')
 
-# ----------------- Flight Search -----------------
+    elif request.method == 'POST':
+        try:
+            data = request.get_json()
+            ticket_id = data.get('ticket_id')
+
+            if not ticket_id:
+                return jsonify({"status": "error", "message": "Ticket ID is required"}), 400
+
+            conn = get_db_connection()
+
+            # Check if the ticket exists and belongs to the logged-in user
+            user_id = session.get('user_id')
+            cursor = conn.execute("""
+                SELECT t.ticket_id 
+                FROM ticket t
+                JOIN passenger p ON t.passenger_id = p.passenger_id
+                WHERE t.ticket_id = ? AND p.user_id = ?
+            """, (ticket_id, user_id))
+            ticket = cursor.fetchone()
+
+            if not ticket:
+                conn.close()
+                return jsonify({"status": "error", "message": "Ticket not found or does not belong to you."}), 404
+
+            # Update ticket status to "Cancelled"
+            conn.execute("""
+                UPDATE ticket 
+                SET status = 'Cancelled' 
+                WHERE ticket_id = ?
+            """, (ticket_id,))
+
+            # Insert a refund record
+            conn.execute("""
+                INSERT INTO refunds (ticket_id, status)
+                VALUES (?, 'Pending')
+            """, (ticket_id,))
+
+            conn.commit()
+            conn.close()
+
+            return jsonify({"status": "success", "message": "Ticket canceled successfully. Refund initiated."}), 200
+        except Exception as e:
+            print(f"Error canceling ticket: {e}")
+            return jsonify({"status": "error", "message": "An internal error occurred"}), 500
+
+
 @app.route('/user/check-flights', methods=['GET', 'POST'])
 @login_required
 def check_flights():
@@ -600,40 +731,51 @@ def check_flights():
         data = request.get_json()
         source = data.get('source')
         destination = data.get('destination')
-        departure_date = data.get('departure_date')
 
-        if not source or not destination or not departure_date:
+        if not source or not destination:
             return jsonify({"status": "error", "message": "Missing required fields"}), 400
 
         conn = get_db_connection()
-        cursor = conn.execute("""
-            SELECT flight_id, source, destination, departure_time, duration 
-            FROM flights 
-            WHERE LOWER(source) = LOWER(?) 
-            AND LOWER(destination) = LOWER(?) 
-            AND DATE(departure_time) = ?
-        """, (source, destination, departure_date))
+        cursor = conn.cursor()
 
+        # Debugging: Print values to check
+        print(f"Searching flights from {source} to {destination}")
+
+        query = """
+            SELECT flight_id, source, destination, departure_time, duration 
+            FROM flight 
+            WHERE LOWER(source) = LOWER(?) 
+            AND LOWER(destination) = LOWER(?)
+        """
+        cursor.execute(query, (source, destination))
         flights = cursor.fetchall()
+
         conn.close()
 
         if flights:
             flight_list = [
                 {
-                    "flight_id": flight["flight_id"],
-                    "source": flight["source"],
-                    "destination": flight["destination"],
-                    "departure_time": flight["departure_time"],
-                    "duration": flight["duration"]
+                    "flight_id": flight[0],
+                    "source": flight[1],
+                    "destination": flight[2],
+                    "departure_time": flight[3],
+                    "duration": flight[4]
                 }
                 for flight in flights
             ]
+
+            # Debugging: Print retrieved flights
+            print("Flights found:", flight_list)
+
             return jsonify({"status": "success", "flights": flight_list}), 200
         else:
-            return jsonify({"status": "error", "message": "No flights available for the selected route and date."}), 404
+            print("No flights found")
+            return jsonify({"status": "error", "message": "No flights available for the selected route."}), 404
+
     except Exception as e:
         print(f"Error searching flights: {e}")
         return jsonify({"status": "error", "message": "An internal error occurred"}), 500
+
 
 
 # ----------------- Additional Pages -----------------

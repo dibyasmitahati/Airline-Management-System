@@ -1,11 +1,10 @@
 document.getElementById('flight-search-form').addEventListener('submit', function (event) {
     event.preventDefault();
 
-    const from = document.getElementById('from').value.trim();
-    const to = document.getElementById('to').value.trim();
-    const departureDate = document.getElementById('departure-date').value;
+    const source = document.getElementById('source').value.trim();
+    const destination = document.getElementById('destination').value.trim();
 
-    if (!from || !to || !departureDate) {
+    if (!source || !destination) {
         alert('Please fill out all fields.');
         return;
     }
@@ -14,9 +13,8 @@ document.getElementById('flight-search-form').addEventListener('submit', functio
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-            source: from,
-            destination: to,
-            departure_date: departureDate
+            source: source,
+            destination: destination
         }),
     })
     .then(response => response.json())

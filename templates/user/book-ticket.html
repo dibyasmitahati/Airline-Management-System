@@ -12,29 +12,29 @@
 </head>
 <body>
     <!-- Navbar -->
-   <nav class="navbar navbar-inverse navbar-fixed-top">
-    <div class="container-fluid">
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#adminNavbar">
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand" href="{{ url_for('index') }}">Airline-Z</a>
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#adminNavbar">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="{{ url_for('index') }}">Airline-Z</a>
+            </div>
+            <div class="collapse navbar-collapse" id="adminNavbar">
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="{{ url_for('user_panel') }}"><i class="fa fa-home"></i> Home</a></li>
+                    <li><a href="{{ url_for('check_flights') }}"><i class="fa fa-plane"></i> Check Flights</a></li>
+                    <li class="active"><a href="{{ url_for('book_ticket') }}"><i class="fa fa-ticket"></i> Book Ticket</a></li>
+                    <li><a href="{{ url_for('cancel_ticket') }}"><i class="fa fa-ticket"></i> Cancel Ticket</a></li>
+                    <li><a href="{{ url_for('about_us') }}"><i class="fa fa-info-circle"></i> About Us</a></li>
+                    <li><a href="{{ url_for('contact_us') }}"><i class="fa fa-envelope"></i> Contact Us</a></li>
+                    <li><a href="{{ url_for('user_logout') }}"><i class="fa fa-sign-out-alt"></i>Logout</a></li>
+                </ul>
+            </div>
         </div>
-        <div class="collapse navbar-collapse" id="adminNavbar">
-            <ul class="nav navbar-nav navbar-right">
-                <li><a href="{{ url_for('user_panel') }}"><i class="fa fa-home"></i> Home</a></li>
-                <li><a href="{{ url_for('check_flights') }}"><i class="fa fa-plane"></i> Check Flights</a></li>
-                <li class="active"><a href="{{ url_for('book_ticket') }}"><i class="fa fa-ticket"></i> Book Ticket</a></li>
-                <li><a href="{{ url_for('cancel_ticket') }}"><i class="fa fa-ticket"></i> Cancel Ticket</a></li>
-                <li><a href="{{ url_for('about_us') }}"><i class="fa fa-info-circle"></i> About Us</a></li>
-                <li><a href="{{ url_for('contact_us') }}"><i class="fa fa-envelope"></i> Contact Us</a></li>
-                <li><a href="{{ url_for('user_logout') }}"><i class="fa fa-sign-out-alt"></i>Logout</a></li>
-            </ul>
-        </div>
-    </div>
-</nav>
+    </nav>
 
     <!-- Book Ticket Section -->
     <div class="container">
@@ -44,7 +44,10 @@
         </header>
         <div class="panel panel-default">
             <div class="panel-body">
-                <form id="book-ticket-form" method="POST" action="/process-booking">
+                <form id="book-ticket-form" method="POST" action="{{ url_for('book_ticket') }}">
+                    <!-- Hidden Flight ID -->
+                    <input type="hidden" id="flight_id" name="flight_id" value="{{ flight_id }}">
+
                     <!-- Adult Details -->
                     <h3>Adult Details</h3>
                     <div class="form-group">
@@ -87,9 +90,27 @@
                         <input type="date" id="dob" class="form-control" name="dob">
                     </div>
 
+                    <!-- Payment Details -->
+                    <h3>Payment Details</h3>
+                    <div class="form-group">
+                        <label for="fare">Fare (USD)</label>
+                        <input type="number" id="fare" class="form-control" name="fare" value="{{ fare }}" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="card_number">Card Number</label>
+                        <input type="text" id="card_number" class="form-control" name="card_number" placeholder="1234 5678 9012 3456" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="expiry_date">Expiry Date</label>
+                        <input type="text" id="expiry_date" class="form-control" name="expiry_date" placeholder="MM/YY" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="cvv">CVV</label>
+                        <input type="text" id="cvv" class="form-control" name="cvv" placeholder="123" required>
+                    </div>
                     <!-- Submit Button -->
                     <div class="text-center">
-                        <button type="submit" class="btn btn-primary">Submit</button>
+                        <button type="submit" class="btn btn-primary">Pay and Book Ticket</button>
                     </div>
                 </form>
             </div>
@@ -102,7 +123,5 @@
             <p>&copy; 2025 Airline-Z. All rights reserved.</p>
         </div>
     </footer>
-
-    <script src="{{ url_for('static', filename='js/user/book-ticket.js') }}"></script>
 </body>
 </html>
