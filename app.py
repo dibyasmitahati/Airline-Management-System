@@ -1,7 +1,7 @@
 # app.py
 from flask import Flask, render_template, request, redirect, url_for, flash, session, jsonify
 from functools import wraps
-import sqlite3, datetime
+import sqlite3, datetime, random
 from werkzeug.security import generate_password_hash, check_password_hash
 
 # Flask App Initialization
@@ -588,7 +588,6 @@ def user_logout():
 def user_panel():
     return render_template('user/user-panel.html')
 
-import random
 
 @app.route('/book-ticket', methods=['GET', 'POST'])
 @login_required
@@ -612,6 +611,15 @@ def book_ticket():
             flight_id = data.get('flight_id')
             fare = float(data.get('fare'))  # Get the fare from the form
 
+            # Function to generate a random seat number
+            def generate_seat():
+                row = random.choice(['A', 'B', 'C', 'D', 'E', 'F'])
+                number = random.randint(1, 30)  # Assuming 30 seats per row
+                return f"{row}{number}"
+
+            # Randomly select a flight class
+            flight_class = random.choice(['Economy', 'Business', 'First Class'])
+
             # Insert passenger details
             conn = get_db_connection()
             cursor = conn.execute("""
@@ -620,13 +628,13 @@ def book_ticket():
             """, (user_id,))
             passenger_id = cursor.lastrowid
 
-            # Insert ticket details
-            conn.execute("""
+            # Insert ticket details with dynamic seat and class
+            cursor = conn.execute("""
                 INSERT INTO ticket (
                     flight_id, passenger_id, seat_no, date_of_journey, flight_class, fare, status
                 ) VALUES (?, ?, ?, ?, ?, ?, ?)
             """, (
-                flight_id, passenger_id, 'A1', datetime.datetime.now().strftime('%Y-%m-%d'), 'Economy', fare, 'Confirmed'
+                flight_id, passenger_id, generate_seat(), datetime.datetime.now().strftime('%Y-%m-%d'), flight_class, fare, 'Confirmed'
             ))
             ticket_id = cursor.lastrowid
 
@@ -639,6 +647,7 @@ def book_ticket():
             print(f"Error processing booking: {e}")
             flash("An error occurred while processing your booking. Please try again.", "danger")
             return redirect(url_for('book_ticket', flight_id=data.get('flight_id')))
+
 
 @app.route('/view-ticket')
 @login_required
