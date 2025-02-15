@@ -22,25 +22,18 @@ $(document).ready(function() {
             return;
         }
 
-        // Simulate a registration request (replace with actual AJAX call)
-        console.log('Registering with:', {
-            name,
-            surname,
-            gender,
-            dob,
-            email,
-            phone,
-            street,
-            locality,
-            city,
-            country,
-            password,
-            language,
-            nationality
+        // Submit the form data to the server
+        $.ajax({
+            url: '/user/register',
+            method: 'POST',
+            data: $(this).serialize(),
+            success: function(response) {
+                // Redirect to the login page on success
+                window.location.href = '/user/login';
+            },
+            error: function(xhr, status, error) {
+                alert('Registration failed. Please try again.');
+            }
         });
-
-        // Redirect or show success message (replace with actual logic)
-        alert('Registration successful!');
-        // window.location.href = '/login'; // Redirect to login page
     });
 });

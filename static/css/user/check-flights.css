@@ -1,18 +1,21 @@
-/* Navbar Custom Styling */
+/* ================= Navbar Styling ================= */
 .navbar-custom {
     background-color: #1a1a1a;
     border: none;
     border-radius: 0;
 }
+
 .navbar-custom .navbar-brand {
     color: #f8f9fa !important;
     font-size: 1.5em;
     font-weight: bold;
 }
+
 .navbar-custom .nav > li > a {
     color: #f8f9fa !important;
     font-size: 1.1em;
 }
+
 .navbar-custom .nav > li > a:hover {
     background-color: #444444 !important;
     color: #ffffff !important;
@@ -23,33 +26,55 @@
     background-color: #000 !important;
 }
 
-/* Flight Search Section */
+/* ================= Flight Search Section ================= */
+.container {
+    margin-top: 80px;
+}
+
 h2 {
     color: #2c3e50;
     font-weight: bold;
+    text-transform: uppercase;
     margin-bottom: 20px;
 }
+
 .panel-default {
     border-color: #ddd;
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
 }
+
 .panel-body {
     padding: 20px;
     background-color: #f8f9fa;
     border-radius: 5px;
 }
+
 label {
     font-weight: bold;
     color: #2c3e50;
 }
+
 input, select, button {
     margin-top: 10px;
 }
 
-/* Flight Results Section */
+.btn-primary {
+    background-color: #007bff;
+    border: none;
+    padding: 10px 20px;
+    font-size: 1.1em;
+    transition: 0.3s;
+}
+
+.btn-primary:hover {
+    background-color: #0056b3;
+}
+
+/* ================= Flight Results Section ================= */
 #flight-results {
     margin-top: 30px;
 }
+
 .flight-card {
     background-color: #ffffff;
     border: 1px solid #ddd;
@@ -57,27 +82,50 @@ input, select, button {
     padding: 20px;
     margin-bottom: 15px;
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
+
 .flight-card:hover {
     transform: translateY(-5px);
+    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.2);
 }
+
 .flight-card h4 {
     color: #2c3e50;
     font-weight: bold;
+    font-size: 1.3em;
 }
+
 .flight-card p {
     margin: 5px 0;
     color: #555;
+    font-size: 1.1em;
 }
+
+.book-ticket {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    font-size: 1em;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.book-ticket:hover {
+    background-color: #218838;
+}
+
+/* No flights found message */
 .no-flights {
     text-align: center;
     color: #ff4d4d;
     font-weight: bold;
     font-size: 1.2em;
+    margin-top: 20px;
 }
 
-/* Footer Styling */
+/* ================= Footer Styling ================= */
 footer {
     background-color: #222;
     color: #fff;
@@ -85,8 +133,25 @@ footer {
     position: fixed;
     bottom: 0;
     width: 100%;
+    text-align: center;
 }
 
 .footer p {
     margin: 0;
+}
+
+/* ================= Responsive Design ================= */
+@media (max-width: 768px) {
+    .container {
+        margin-top: 100px;
+    }
+
+    .flight-card {
+        text-align: center;
+    }
+
+    .book-ticket {
+        width: 100%;
+        padding: 10px;
+    }
 }

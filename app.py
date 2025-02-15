@@ -1,5 +1,6 @@
 # app.py
 from flask import Flask, render_template, request, redirect, url_for, flash, session, jsonify
+from functools import wraps
 import sqlite3
 from werkzeug.security import generate_password_hash, check_password_hash
 
@@ -301,36 +302,34 @@ def report_fraud():
 
 # User Management
 
-# Page Rendering
+# User Management Page (GET with Search)
 @app.route('/admin/user-management', methods=['GET'])
 def user_management():
+    search_query = request.args.get('query', '').strip()  # Get search query from URL parameters
+
     try:
         conn = get_db_connection()
-        users = conn.execute("SELECT * FROM user").fetchall()
+        
+        if search_query:
+            # Search for users by ID, name, or email (case-insensitive)
+            users = conn.execute("""
+                SELECT * FROM user 
+                WHERE LOWER(user_id) LIKE LOWER(?) 
+                OR LOWER(name) LIKE LOWER(?) 
+                OR LOWER(email) LIKE LOWER(?)
+            """, (f"%{search_query}%", f"%{search_query}%", f"%{search_query}%")).fetchall()
+        else:
+            # Show all users if no search query
+            users = conn.execute("SELECT * FROM user").fetchall()
+
         conn.close()
-        return render_template('admin/user-management.html', users=users)
+        return render_template('admin/user-management.html', users=users, search_query=search_query)
+
     except Exception as e:
         flash(f"Error: {e}", "danger")
         return redirect(url_for('admin_panel'))
 
-# Add User
-@app.route('/admin/add-user', methods=['POST'])
-def add_user():
-    try:
-        data = request.form
-        conn = get_db_connection()
-        conn.execute("""
-            INSERT INTO user (name, surname, gender, email, nationality, dob) 
-            VALUES (?, ?, ?, ?, ?, ?)
-        """, (data['name'], data['surname'], data['gender'], data['email'], data['nationality'], data['dob']))
-        conn.commit()
-        conn.close()
-        flash("User added successfully!", "success")
-    except Exception as e:
-        flash(f"Error: {e}", "danger")
-    return redirect(url_for('user_management'))
-
-# Remove User
+# Remove User (POST)
 @app.route('/admin/remove-user', methods=['POST'])
 def remove_user():
     try:
@@ -497,70 +496,147 @@ def delete_feedback(message_id):
 
 # User Management
 
+# ----------------- Authentication Helper: Login Required -----------------
+def login_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if 'user_id' not in session:
+            flash("You must be logged in to access this page.", "warning")
+            return redirect(url_for('user_login'))
+        return f(*args, **kwargs)
+    return decorated_function
+
+# ----------------- User Registration -----------------
 @app.route('/user/register', methods=['GET', 'POST'])
 def user_register():
+    if request.method == 'POST':
+        try:
+            data = request.form
+            password_hash = generate_password_hash(data['password'])  # Hash the password
+
+            # Insert user data into the database
+            conn = get_db_connection()
+            conn.execute("""
+                INSERT INTO user (
+                    password, name, surname, gender, email, language, nationality, dob,
+                    street, locality, city, country, phone
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            """, (
+                password_hash, data['name'], data['surname'], data['gender'], data['email'],
+                data['language'], data['nationality'], data['dob'], data['street'], data['locality'],
+                data['city'], data['country'], data['phone']
+            ))
+            conn.commit()
+            conn.close()
+
+            flash("Registration successful! Please login.", "success")
+            return redirect(url_for('user_login'))
+
+        except Exception as e:
+            flash(f"Error: {e}", "danger")
+            return redirect(url_for('user_register'))
+
     return render_template('user/register.html')
 
-# User Login (Now Just a Page)
+# ----------------- User Login -----------------
 @app.route('/user/login', methods=['GET', 'POST'])
 def user_login():
+    if request.method == 'POST':
+        data = request.get_json()
+        email = data.get('email')
+        password = data.get('password')
+
+        if not email or not password:
+            return jsonify({"status": "error", "message": "Email and password are required"}), 400
+
+        try:
+            conn = get_db_connection()
+            cursor = conn.execute("SELECT user_id, password FROM user WHERE email = ?", (email,))
+            user = cursor.fetchone()
+            conn.close()
+
+            if user and check_password_hash(user['password'], password):
+                session['user_id'] = user['user_id']  # Store user ID in session
+                return jsonify({"status": "success", "message": "Login successful"}), 200
+            else:
+                return jsonify({"status": "error", "message": "Invalid email or password"}), 401
+        except Exception as e:
+            print(f"Error during login: {e}")
+            return jsonify({"status": "error", "message": "An internal error occurred"}), 500
+
     return render_template('user/login.html')
 
-# User Logout (Redirects to Login Page)
+# ----------------- User Logout -----------------
 @app.route('/user/logout')
 def user_logout():
+    session.pop('user_id', None)  # Remove user session
+    flash("You have been logged out.", "info")
     return redirect(url_for('user_login'))
 
-# User Panel
+# ----------------- Protected Routes -----------------
 @app.route('/user/user-panel')
+@login_required
 def user_panel():
     return render_template('user/user-panel.html')
 
-# Check Flights Route (Handles Both Rendering and Searching)
+@app.route('/user/book-ticket')
+@login_required
+def book_ticket():
+    return render_template('user/book-ticket.html')
+
+@app.route('/user/cancel-ticket')
+@login_required
+def cancel_ticket():
+    return render_template('user/cancel-ticket.html')
+
+# ----------------- Flight Search -----------------
 @app.route('/user/check-flights', methods=['GET', 'POST'])
+@login_required
 def check_flights():
     if request.method == 'GET':
         return render_template('user/check-flights.html')
 
-    elif request.method == 'POST':  # Searching for flights
-        try:
-            data = request.get_json()
-            source = data.get('source')
-            destination = data.get('destination')
-            departure_date = data.get('departure_date')
+    try:
+        data = request.get_json()
+        source = data.get('source')
+        destination = data.get('destination')
+        departure_date = data.get('departure_date')
 
-            if not source or not destination or not departure_date:
-                return jsonify({"status": "error", "message": "Missing required fields"}), 400
+        if not source or not destination or not departure_date:
+            return jsonify({"status": "error", "message": "Missing required fields"}), 400
 
-            conn = get_db_connection()
-            cursor = conn.execute("""
-                SELECT flight_id, source, destination, departure_time, duration 
-                FROM flights 
-                WHERE source = ? AND destination = ? AND DATE(departure_time) = ?
-            """, (source, destination, departure_date))
+        conn = get_db_connection()
+        cursor = conn.execute("""
+            SELECT flight_id, source, destination, departure_time, duration 
+            FROM flights 
+            WHERE LOWER(source) = LOWER(?) 
+            AND LOWER(destination) = LOWER(?) 
+            AND DATE(departure_time) = ?
+        """, (source, destination, departure_date))
 
-            flights = cursor.fetchall()
-            conn.close()
+        flights = cursor.fetchall()
+        conn.close()
 
-            if flights:
-                return jsonify({"status": "success", "flights": [dict(flight) for flight in flights]})
-            else:
-                return jsonify({"status": "error", "message": "No flights available for the selected route and date."}), 404
-        except Exception as e:
-            print(f"Error searching flights: {e}")
-            return jsonify({"status": "error", "message": "An internal error occurred"}), 500
+        if flights:
+            flight_list = [
+                {
+                    "flight_id": flight["flight_id"],
+                    "source": flight["source"],
+                    "destination": flight["destination"],
+                    "departure_time": flight["departure_time"],
+                    "duration": flight["duration"]
+                }
+                for flight in flights
+            ]
+            return jsonify({"status": "success", "flights": flight_list}), 200
+        else:
+            return jsonify({"status": "error", "message": "No flights available for the selected route and date."}), 404
+    except Exception as e:
+        print(f"Error searching flights: {e}")
+        return jsonify({"status": "error", "message": "An internal error occurred"}), 500
 
-# Book Ticket
-@app.route('/user/book-ticket')
-def book_ticket():
-    return render_template('user/book-ticket.html')
 
-# Cancel Ticket
-@app.route('/user/cancel-ticket')
-def cancel_ticket():
-    return render_template('user/cancel-ticket.html')
-
-# About Us
+# ----------------- Additional Pages -----------------
 @app.route('/user/about-us')
 def about_us():
     return render_template('user/about-us.html')

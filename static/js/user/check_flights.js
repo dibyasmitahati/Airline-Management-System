@@ -1,19 +1,16 @@
 document.getElementById('flight-search-form').addEventListener('submit', function (event) {
     event.preventDefault();
 
-    // Retrieve form data
     const from = document.getElementById('from').value.trim();
     const to = document.getElementById('to').value.trim();
     const departureDate = document.getElementById('departure-date').value;
 
-    // Basic validation
     if (!from || !to || !departureDate) {
         alert('Please fill out all fields.');
         return;
     }
 
-    // Fetch flights from the server
-    fetch('/user/check-flights', {  // <-- FIXED ROUTE HERE
+    fetch('/user/check-flights', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -25,10 +22,10 @@ document.getElementById('flight-search-form').addEventListener('submit', functio
     .then(response => response.json())
     .then(data => {
         const flightResults = document.getElementById('flight-results');
-        flightResults.innerHTML = ''; // Clear previous results
+        flightResults.innerHTML = '';
 
         if (data.status === "error") {
-            alert(data.message);
+            flightResults.innerHTML = `<p class="no-flights">${data.message}</p>`;
             return;
         }
 
@@ -48,7 +45,6 @@ document.getElementById('flight-search-form').addEventListener('submit', functio
             flightResults.appendChild(flightCard);
         });
 
-        // Add event listeners to book buttons
         document.querySelectorAll('.book-ticket').forEach(button => {
             button.addEventListener('click', function () {
                 const flightId = this.getAttribute('data-id');

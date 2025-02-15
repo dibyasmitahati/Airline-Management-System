@@ -31,58 +31,52 @@
                 <li><a href="{{ url_for('cancel_ticket') }}"><i class="fa fa-ticket"></i> Cancel Ticket</a></li>
                 <li><a href="{{ url_for('about_us') }}"><i class="fa fa-info-circle"></i> About Us</a></li>
                 <li><a href="{{ url_for('contact_us') }}"><i class="fa fa-envelope"></i> Contact Us</a></li>
+                <li><a href="{{ url_for('user_logout') }}"><i class="fa fa-sign-out-alt"></i>Logout</a></li>
             </ul>
         </div>
     </div>
 </nav>
     
     <!-- Flight Search Section -->
-    <div class="container">
-        <br><br><br>
-        <header class="text-center">
-            <h2>Find Your Flight</h2>
-            <hr>
-        </header>
-        <div class="panel panel-default">
-            <div class="panel-body">
-                <form id="flight-search-form">
-                    <div class="row">
-                        <div class="col-sm-6">
-                            <label for="from">From</label>
-                            <input type="text" id="from" name="from" class="form-control" placeholder="Origin" required>
-                        </div>
-                        <div class="col-sm-6">
-                            <label for="to">To</label>
-                            <input type="text" id="to" name="to" class="form-control" placeholder="Destination" required>
-                        </div>
+<div class="container">
+    <br><br><br>
+    <header class="text-center">
+        <h2>Find Your Flight</h2>
+        <hr>
+    </header>
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <form id="flight-search-form">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <label for="source">From</label>
+                        <input type="text" id="source" name="source" class="form-control" placeholder="Origin" required>
                     </div>
-                    <div class="row">
-                        <div class="col-sm-6">
-                            <label for="departure-date">Departure Date</label>
-                            <input type="date" id="departure-date" name="departure_date" class="form-control" required>
-                        </div>
-                        <div class="col-sm-6">
-                            <label for="class">Class</label>
-                            <select id="class" name="class" class="form-control">
-                                <option value="Economy">Economy</option>
-                                <option value="Business">Business</option>
-                                <option value="First">First</option>
-                            </select>
-                        </div>
+                    <div class="col-sm-6">
+                        <label for="destination">To</label>
+                        <input type="text" id="destination" name="destination" class="form-control" placeholder="Destination" required>
                     </div>
-                    <div class="text-center">
-                        <br>
-                        <button type="submit" class="btn btn-primary">Search Flights</button>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <label for="departure-date">Departure Date</label>
+                        <input type="date" id="departure-date" name="departure_date" class="form-control" required>
                     </div>
-                </form>
-            </div>
-        </div>
-
-        <!-- Flight Results Section -->
-        <div id="flight-results" class="animate__animated animate__fadeIn">
-            <!-- Results will be dynamically populated here -->
+                </div>
+                <div class="text-center">
+                    <br>
+                    <button type="submit" class="btn btn-primary">Search Flights</button>
+                </div>
+            </form>
         </div>
     </div>
+
+    <!-- Flight Results Section -->
+    <div id="flight-results" class="animate__animated animate__fadeIn">
+        <!-- Results will be dynamically populated here -->
+    </div>
+</div>
+
 
     <!-- Footer -->
     <footer class="footer">

@@ -1,27 +1,36 @@
+/* Page Background */
 body {
-    background-color: #f8f9fa;
+    background: linear-gradient(to right, #74ebd5, #acb6e5);
+    font-family: 'Arial', sans-serif;
+}
+
+/* Center the form vertically & horizontally */
+.container {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
-    margin: 0;
+    min-height: 100vh;
 }
 
+/* Registration Form Container */
 .register-container {
     background-color: #ffffff;
-    padding: 2rem;
-    border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 2.5rem;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
     width: 100%;
-    max-width: 600px;
+    max-width: 700px; /* Increased for 2-column layout */
 }
 
+/* Form Headings */
 .register-container h2 {
     margin-bottom: 1.5rem;
     color: #333;
-    text-align: center;
+    font-size: 1.8rem;
+    font-weight: bold;
 }
 
+/* Form Fields */
 .form-group {
     margin-bottom: 1rem;
 }
@@ -29,25 +38,57 @@ body {
 .form-group label {
     font-weight: bold;
     color: #555;
+    display: block;
+    margin-bottom: 5px;
 }
 
+/* Inputs */
 .form-control {
-    border-radius: 4px;
-    border: 1px solid #ddd;
-    padding: 0.5rem;
+    width: 100%;
+    padding: 0.7rem;
     font-size: 1rem;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    transition: all 0.3s ease-in-out;
 }
 
+.form-control:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+    outline: none;
+}
+
+/* Button */
 .btn-primary {
-    background-color: #007bff;
+    background: linear-gradient(to right, #007bff, #0056b3);
     border: none;
-    padding: 0.75rem;
-    font-size: 1rem;
-    border-radius: 4px;
+    padding: 0.85rem;
+    font-size: 1.1rem;
+    border-radius: 6px;
     cursor: pointer;
+    color: #fff;
+    font-weight: bold;
     width: 100%;
+    transition: all 0.3s ease;
 }
 
 .btn-primary:hover {
-    background-color: #0056b3;
+    background: linear-gradient(to right, #0056b3, #003f7f);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .register-container {
+        max-width: 90%;
+        padding: 2rem;
+    }
+
+    /* Convert 2-column layout to single column */
+    .row {
+        display: block;
+    }
+
+    .col-md-6 {
+        width: 100%;
+    }
 }

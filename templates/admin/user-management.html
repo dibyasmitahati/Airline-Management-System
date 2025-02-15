@@ -29,7 +29,7 @@
                     <li><a href="{{ url_for('staff_management') }}"><i class="fa fa-users"></i> Staff</a></li>
                     <li><a href="{{ url_for('flight_management') }}"><i class="fa fa-plane"></i> Flights</a></li>
                     <li><a href="{{ url_for('refund_management') }}"><i class="fa fa-money-bill"></i> Refund</a></li>
-                    <li><a href="{{ url_for('user_management') }}"><i class="fa fa-user"></i> Users</a></li>
+                    <li class="active"><a href="{{ url_for('user_management') }}"><i class="fa fa-user"></i> Users</a></li>
                     <li><a href="{{ url_for('ticket_management') }}"><i class="fa fa-ticket"></i> Ticket</a></li>
                     <li><a href="{{ url_for('feedback_management')}}"><i class="fa fa-info-circle"></i> Feedback</a></li>
                     <li><a href="{{ url_for('admin_logout') }}"><i class="fa fa-sign-out-alt"></i> Logout</a></li>
@@ -42,21 +42,16 @@
 
     <div class="container">
        <h2 class="text-center">User Management</h2>
-       <form action="{{ url_for('add_user') }}" method="POST" class="form-inline">
-           <input type="text" name="name" placeholder="First Name" class="form-control" required>
-           <input type="text" name="surname" placeholder="Surname" class="form-control" required>
-           <select name="gender" class="form-control" required>
-               <option value="">Gender</option>
-               <option value="Male">Male</option>
-               <option value="Female">Female</option>
-               <option value="Other">Other</option>
-           </select>
-           <input type="email" name="email" placeholder="Email" class="form-control" required>
-           <input type="text" name="nationality" placeholder="Nationality" class="form-control">
-           <input type="date" name="dob" class="form-control">
-           <button type="submit" class="btn btn-primary">Add User</button>
+       
+       <!-- Search Form -->
+       <form id="searchForm" action="{{ url_for('user_management') }}" method="GET" class="form-inline text-center">
+           <input type="text" name="search_query" placeholder="Search by Name, Email, etc." class="form-control">
+           <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i> Search</button>
        </form>
+       
        <hr>
+       
+       <!-- User Table -->
        <table class="table table-bordered table-striped">
            <thead>
                <tr>
