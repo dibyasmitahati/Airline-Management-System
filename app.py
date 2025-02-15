@@ -30,7 +30,7 @@ def index():
 def admin_login():
     if request.method == 'POST':
         password = request.form['password']
-        if password == 'JustInTime321':  # Hardcoded password for admin
+        if password == 'password':  # Hardcoded password for admin
             session['admin_logged_in'] = True
             flash("Login successful!", "success")
             return redirect(url_for('admin_panel'))

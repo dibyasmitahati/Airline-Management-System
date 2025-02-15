@@ -27,6 +27,9 @@
                 <p><strong>Status:</strong> {{ ticket.status }}</p>
                 <p><strong>Passenger:</strong> {{ ticket.name }} {{ ticket.surname }}</p>
             </div>
+            <div class="text-center">
+                <a href="{{ url_for('user_panel') }}" class="btn btn-primary">Go to User Panel</a>
+            </div>
         </div>
     </div>
 </body>
