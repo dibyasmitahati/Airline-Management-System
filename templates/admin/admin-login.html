@@ -16,6 +16,9 @@
             </div>
             <button type="submit" class="login-button">Login</button>
         </form>
+
+        <button onclick="window.location.href='/'" class="return-button">Return to Home</button>
+
         <div id="message-container"></div>
         {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}

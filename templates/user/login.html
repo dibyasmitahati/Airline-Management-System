@@ -22,6 +22,9 @@
                     <input type="password" class="form-control" id="password" name="password" required>
                 </div>
                 <button type="submit" class="btn btn-primary btn-block mt-3">Login</button>
+                <button type="button" class="btn btn-secondary btn-block mt-2" onclick="window.location.href='/'">
+                    Return to Home
+                </button>
             </form>
             <br>
             <p class="text-center">Don't have an account? <a href="{{ url_for('user_register') }}">Register here</a></p>

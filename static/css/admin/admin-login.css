@@ -95,3 +95,22 @@ body {
     background: #4caf50;
     color: #ffffff;
 }
+
+.return-button {
+    margin-top: 1rem;
+    padding: 0.75rem;
+    font-size: 1rem;
+    background: #6c757d;
+    border: none;
+    border-radius: 8px;
+    color: #ffffff;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: background 0.3s ease, transform 0.2s ease;
+    width: 424px;
+}
+
+.return-button:hover {
+    background: #5a6268;
+    transform: scale(1.05);
+}

@@ -586,7 +586,39 @@ def user_logout():
 @app.route('/user/user-panel')
 @login_required
 def user_panel():
-    return render_template('user/user-panel.html')
+    try:
+        # Fetch the logged-in user's ID from the session
+        user_id = session.get('user_id')  # Get user_id from session
+
+        if not user_id:
+            flash("You must be logged in to access this page.", "warning")
+            return redirect(url_for('user_login'))
+
+        # Connect to the database
+        conn = get_db_connection()
+        
+        # Fetch tickets associated with the logged-in user
+        tickets = conn.execute('''
+            SELECT t.ticket_id, t.flight_id, t.seat_no, t.date_of_journey, t.flight_class, t.fare, t.status, 
+                   f.source, f.destination, f.departure_time, f.duration
+            FROM ticket t
+            JOIN flight f ON t.flight_id = f.flight_id
+            WHERE t.passenger_id IN (
+                SELECT passenger_id FROM passenger WHERE user_id = ?
+            )
+        ''', (user_id,)).fetchall()
+
+        conn.close()
+
+        # Convert the tickets to a list of dictionaries for easier use in the template
+        tickets_list = [dict(ticket) for ticket in tickets]
+
+        # Render the template with the tickets data
+        return render_template('user/user-panel.html', tickets=tickets_list)
+    except Exception as e:
+        print(f"Error fetching tickets: {e}")
+        flash("An error occurred while fetching your tickets. Please try again later.", "danger")
+        return render_template('user/user-panel.html', tickets=[])
 
 
 @app.route('/book-ticket', methods=['GET', 'POST'])

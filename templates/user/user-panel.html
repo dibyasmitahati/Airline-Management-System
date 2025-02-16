@@ -36,11 +36,50 @@
     </div>
 </nav>
 
-    <!-- Welcome Section -->
-    <div class="container welcome-section">
-        <h1>Welcome to Airline-Z User Panel</h1>
-        <p>Manage your bookings, check flights, and stay updated with our services.</p>
-    </div>
+   <!-- Welcome Section -->
+<div class="container welcome-section">
+    <h1>Welcome to Airline-Z User Panel</h1>
+    <p>Manage your bookings, check flights, and stay updated with our services.</p>
+</div>
+
+<!-- Tickets Section -->
+<div class="container tickets-section">
+    <h2>Your Booked Tickets</h2>
+    {% if tickets %}
+        <table class="table table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th>Ticket ID</th>
+                    <th>Flight ID</th>
+                    <th>Source</th>
+                    <th>Destination</th>
+                    <th>Departure Time</th>
+                    <th>Seat No.</th>
+                    <th>Class</th>
+                    <th>Fare</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for ticket in tickets %}
+                    <tr>
+                        <td>{{ ticket.ticket_id }}</td>
+                        <td>{{ ticket.flight_id }}</td>
+                        <td>{{ ticket.source }}</td>
+                        <td>{{ ticket.destination }}</td>
+                        <td>{{ ticket.departure_time }}</td>
+                        <td>{{ ticket.seat_no }}</td>
+                        <td>{{ ticket.flight_class }}</td>
+                        <td>${{ ticket.fare }}</td>
+                        <td>{{ ticket.status }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>No tickets found. Book a ticket to see it here!</p>
+    {% endif %}
+</div>
 
    <!-- Footer -->
    <footer class="footer">
