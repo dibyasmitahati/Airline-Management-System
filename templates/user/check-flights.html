@@ -37,7 +37,7 @@
     </div>
 </nav>
     
-    <!-- Flight Search Section -->
+<!-- Flight Search Section -->
 <div class="container">
     <header class="text-center">
         <h2>Find Your Flight</h2>
@@ -56,12 +56,16 @@
                         <input type="text" id="destination" name="destination" class="form-control" placeholder="Destination" required>
                     </div>
                 </div>
-                <!-- <div class="row">
+                <div class="row">
                     <div class="col-sm-6">
-                        <label for="departure-date">Departure Date</label>
-                        <input type="date" id="departure-date" name="departure_date" class="form-control" required>
+                        <label for="flight-class">Flight Class</label>
+                        <select id="flight-class" name="flight_class" class="form-control" required>
+                            <option value="Economy">Economy</option>
+                            <option value="Business">Business</option>
+                            <option value="First Class">First Class</option>
+                        </select>
                     </div>
-                </div> -->
+                </div>
                 <div class="text-center">
                     <br>
                     <button type="submit" class="btn btn-primary">Search Flights</button>

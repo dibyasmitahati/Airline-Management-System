@@ -43,11 +43,11 @@
     <div class="container">
        <h2 class="text-center">User Management</h2>
        
-       <!-- Search Form -->
        <form id="searchForm" action="{{ url_for('user_management') }}" method="GET" class="form-inline text-center">
-           <input type="text" name="search_query" placeholder="Search by Name, Email, etc." class="form-control">
-           <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i> Search</button>
-       </form>
+        <input type="text" name="search_query" placeholder="Search by Name, Email, etc." class="form-control" value="{{ search_query }}">
+        <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i> Search</button>
+    </form>
+    
        
        <hr>
        

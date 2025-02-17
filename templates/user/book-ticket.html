@@ -74,8 +74,10 @@
                         <label for="phone">Phone</label>
                         <input type="tel" id="phone" class="form-control" name="phone" placeholder="123-456-7890" required>
                     </div>
-
-                    <!-- Children Details -->
+                    <!-- Hidden Flight ID and Class -->
+                    <input type="hidden" id="flight_id" name="flight_id" value="{{ flight_id }}">
+                    <input type="hidden" id="flight_class" name="flight_class" value="{{ flight_class }}">
+                    <!-- Children Details
                     <h3>Children Details</h3>
                     <div class="form-group">
                         <label for="child_first_name">First Name</label>
@@ -88,7 +90,7 @@
                     <div class="form-group">
                         <label for="dob">Date of Birth</label>
                         <input type="date" id="dob" class="form-control" name="dob">
-                    </div>
+                    </div> -->
 
                     <!-- Payment Details -->
                     <h3>Payment Details</h3>

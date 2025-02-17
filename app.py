@@ -305,21 +305,27 @@ def report_fraud():
 # User Management Page (GET with Search)
 @app.route('/admin/user-management', methods=['GET'])
 def user_management():
-    search_query = request.args.get('query', '').strip()  # Get search query from URL parameters
+    search_query = request.args.get('search_query', '').strip()  # Ensure it matches the HTML form input name
 
     try:
         conn = get_db_connection()
         
         if search_query:
-            # Search for users by ID, name, or email (case-insensitive)
-            users = conn.execute("""
-                SELECT * FROM user 
-                WHERE LOWER(user_id) LIKE LOWER(?) 
-                OR LOWER(name) LIKE LOWER(?) 
-                OR LOWER(email) LIKE LOWER(?)
-            """, (f"%{search_query}%", f"%{search_query}%", f"%{search_query}%")).fetchall()
+            # Ensure numeric search works properly
+            if search_query.isdigit():
+                users = conn.execute("""
+                    SELECT * FROM user 
+                    WHERE user_id = ? 
+                    OR LOWER(name) LIKE LOWER(?) 
+                    OR LOWER(email) LIKE LOWER(?)
+                """, (search_query, f"%{search_query}%", f"%{search_query}%")).fetchall()
+            else:
+                users = conn.execute("""
+                    SELECT * FROM user 
+                    WHERE LOWER(name) LIKE LOWER(?) 
+                    OR LOWER(email) LIKE LOWER(?)
+                """, (f"%{search_query}%", f"%{search_query}%")).fetchall()
         else:
-            # Show all users if no search query
             users = conn.execute("SELECT * FROM user").fetchall()
 
         conn.close()
@@ -328,6 +334,7 @@ def user_management():
     except Exception as e:
         flash(f"Error: {e}", "danger")
         return redirect(url_for('admin_panel'))
+
 
 # Remove User (POST)
 @app.route('/admin/remove-user', methods=['POST'])
@@ -625,34 +632,28 @@ def user_panel():
 @login_required
 def book_ticket():
     if request.method == 'GET':
-        # Display the booking form
         flight_id = request.args.get('flight_id')
-        if not flight_id:
+        flight_class = request.args.get('flight_class')
+        if not flight_id or not flight_class:
             flash("No flight selected. Please select a flight first.", "warning")
             return redirect(url_for('check_flights'))
 
-        # Generate a random fare between 100 and 1000
         random_fare = round(random.uniform(100, 1000), 2)
-        return render_template('user/book-ticket.html', flight_id=flight_id, fare=random_fare)
+        return render_template('user/book-ticket.html', flight_id=flight_id, flight_class=flight_class, fare=random_fare)
 
     elif request.method == 'POST':
-        # Process the booking form
         try:
             data = request.form
             user_id = session.get('user_id')
             flight_id = data.get('flight_id')
-            fare = float(data.get('fare'))  # Get the fare from the form
+            flight_class = data.get('flight_class')
+            fare = float(data.get('fare'))
 
-            # Function to generate a random seat number
             def generate_seat():
                 row = random.choice(['A', 'B', 'C', 'D', 'E', 'F'])
-                number = random.randint(1, 30)  # Assuming 30 seats per row
+                number = random.randint(1, 30)
                 return f"{row}{number}"
 
-            # Randomly select a flight class
-            flight_class = random.choice(['Economy', 'Business', 'First Class'])
-
-            # Insert passenger details
             conn = get_db_connection()
             cursor = conn.execute("""
                 INSERT INTO passenger (user_id)
@@ -660,7 +661,6 @@ def book_ticket():
             """, (user_id,))
             passenger_id = cursor.lastrowid
 
-            # Insert ticket details with dynamic seat and class
             cursor = conn.execute("""
                 INSERT INTO ticket (
                     flight_id, passenger_id, seat_no, date_of_journey, flight_class, fare, status
@@ -772,15 +772,13 @@ def check_flights():
         data = request.get_json()
         source = data.get('source')
         destination = data.get('destination')
+        flight_class = data.get('flight_class')
 
-        if not source or not destination:
+        if not source or not destination or not flight_class:
             return jsonify({"status": "error", "message": "Missing required fields"}), 400
 
         conn = get_db_connection()
         cursor = conn.cursor()
-
-        # Debugging: Print values to check
-        print(f"Searching flights from {source} to {destination}")
 
         query = """
             SELECT flight_id, source, destination, departure_time, duration 
@@ -800,17 +798,14 @@ def check_flights():
                     "source": flight[1],
                     "destination": flight[2],
                     "departure_time": flight[3],
-                    "duration": flight[4]
+                    "duration": flight[4],
+                    "flight_class": flight_class  # Add the flight class to the response
                 }
                 for flight in flights
             ]
 
-            # Debugging: Print retrieved flights
-            print("Flights found:", flight_list)
-
             return jsonify({"status": "success", "flights": flight_list}), 200
         else:
-            print("No flights found")
             return jsonify({"status": "error", "message": "No flights available for the selected route."}), 404
 
     except Exception as e:
