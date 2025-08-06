@@ -32,22 +32,22 @@ A simple yet functional web-based Airlines Management System built with Flask. T
 ## 📁 Folder Structure
 
 Airlines-Management-System/
-│
-├── app.py                  # Main Flask application
-├── init_db.py              # Script to initialize DB
-├── requirements.txt        # All Python dependencies
-├── README.md               # Project documentation
-├── airlinez_test.db        # SQLite database (can be ignored or gitignored)
-├── schema.sql              # Database schema
-├── .gitignore              # Files/folders to exclude from git
-│
-├── static/                 # Static files: CSS, JS, Images
-│   └── ...
-│
-├── templates/              # HTML files (Jinja templates)
-│   └── ...
-│
-└── venv/                   # Virtual environment (should be gitignored)
+- │
+- ├── app.py                  # Main Flask application
+- ├── init_db.py              # Script to initialize DB
+- ├── requirements.txt        # All Python dependencies
+- ├── README.md               # Project documentation
+- ├── airlinez_test.db        # SQLite database (can be ignored or gitignored)
+- ├── schema.sql              # Database schema
+- ├── .gitignore              # Files/folders to exclude from git
+- │
+- ├── static/                 # Static files: CSS, JS, Images
+- │   └── ...
+- │
+- ├── templates/              # HTML files (Jinja templates)
+- │   └── ...
+- │
+- └── venv/                   # Virtual environment (should be gitignored)
 
 ---
 
