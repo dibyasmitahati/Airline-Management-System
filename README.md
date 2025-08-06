@@ -33,14 +33,21 @@ A simple yet functional web-based Airlines Management System built with Flask. T
 
 Airlines-Management-System/
 │
-├── static/                 # CSS, JS, Images
-├── templates/              # HTML templates
 ├── app.py                  # Main Flask application
-├── init_db.py              # Database schema initializer
-├── schema.sql              # SQL schema file
-├── airlinez_test.db        # SQLite database file
-├── requirements.txt        # Python dependencies
-└── README.md               # Project documentation
+├── init_db.py              # Script to initialize DB
+├── requirements.txt        # All Python dependencies
+├── README.md               # Project documentation
+├── airlinez_test.db        # SQLite database (can be ignored or gitignored)
+├── schema.sql              # Database schema
+├── .gitignore              # Files/folders to exclude from git
+│
+├── static/                 # Static files: CSS, JS, Images
+│   └── ...
+│
+├── templates/              # HTML files (Jinja templates)
+│   └── ...
+│
+└── venv/                   # Virtual environment (should be gitignored)
 
 ---
 
