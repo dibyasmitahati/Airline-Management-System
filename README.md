@@ -1,6 +1,6 @@
 # Airlines Management System
 
-A simple yet functional web-based Airlines Management System built with Flask. This application allows users to manage flights, bookings, user authentication, and view booking history — ideal for learning full stack development with Python and Flask.
+A simple yet functional web-based Airlines Management System built with Flask. This application allows users to manage flights, bookings, user authentication, and view booking history.
 
 ---
 
